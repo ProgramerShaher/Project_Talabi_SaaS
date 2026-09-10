@@ -1,0 +1,35 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Talabi.Application.Contracts/Talabi.Application.Contracts.csproj" />
+    <Project Path="src/Talabi.Application/Talabi.Application.csproj" />
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <Project Path="src/Talabi.DbMigrator/Talabi.DbMigrator.csproj" />
+    <Project Path="src/Talabi.Domain.Shared/Talabi.Domain.Shared.csproj" />
+    <Project Path="src/Talabi.Domain/Talabi.Domain.csproj" />
+    <Project Path="src/Talabi.EntityFrameworkCore/Talabi.EntityFrameworkCore.csproj" />
+    <Project Path="src/Talabi.HttpApi.Client/Talabi.HttpApi.Client.csproj" />
+    
+    <Project Path="src/Talabi.HttpApi.Host/Talabi.HttpApi.Host.csproj" />
+    <Project Path="src/Talabi.HttpApi/Talabi.HttpApi.csproj" />
+    
+    
+    
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/Talabi.Application.Tests/Talabi.Application.Tests.csproj" />
+    <Project Path="test/Talabi.Domain.Tests/Talabi.Domain.Tests.csproj" />
+    <Project Path="test/Talabi.EntityFrameworkCore.Tests/Talabi.EntityFrameworkCore.Tests.csproj" />
+    <Project Path="test/Talabi.HttpApi.Client.ConsoleTestApp/Talabi.HttpApi.Client.ConsoleTestApp.csproj" />
+    
+    <Project Path="test/Talabi.TestBase/Talabi.TestBase.csproj" />
+    
+  </Folder>
+</Solution>
