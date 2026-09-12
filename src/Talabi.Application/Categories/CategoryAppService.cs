@@ -25,6 +25,7 @@ public class CategoryAppService : ApplicationService, ICategoryAppService
     #region Fields
 
     private readonly IRepository<Category, Guid> _categoryRepository;
+    private readonly CategoryMapper _mapper;
 
     #endregion
 
@@ -36,6 +37,7 @@ public class CategoryAppService : ApplicationService, ICategoryAppService
     public CategoryAppService(IRepository<Category, Guid> categoryRepository)
     {
         _categoryRepository = categoryRepository;
+        _mapper = new CategoryMapper();
     }
 
     #endregion
@@ -83,7 +85,7 @@ public class CategoryAppService : ApplicationService, ICategoryAppService
             .ToList();
 
         Logger.LogInformation("استرجاع قائمة التصنيفات: {Total} تصنيف", totalCount);
-        return new PagedResultDto<CategoryDto>(totalCount, ObjectMapper.Map<List<Category>, List<CategoryDto>>(items));
+        return new PagedResultDto<CategoryDto>(totalCount, _mapper.ToCategoryDtoList(items));
     }
 
     /// <summary>
@@ -92,7 +94,7 @@ public class CategoryAppService : ApplicationService, ICategoryAppService
     public async Task<CategoryDto> GetAsync(Guid id)
     {
         var category = await _categoryRepository.GetAsync(id);
-        return ObjectMapper.Map<Category, CategoryDto>(category);
+        return _mapper.ToCategoryDto(category);
     }
 
     /// <summary>
@@ -133,7 +135,7 @@ public class CategoryAppService : ApplicationService, ICategoryAppService
 
         await _categoryRepository.InsertAsync(category);
         Logger.LogInformation("تم إنشاء تصنيف جديد: {Name} بالمستوى {Level}", category.Name, category.Level);
-        return ObjectMapper.Map<Category, CategoryDto>(category);
+        return _mapper.ToCategoryDto(category);
     }
 
     /// <summary>
@@ -167,8 +169,8 @@ public class CategoryAppService : ApplicationService, ICategoryAppService
         category.SortOrder = input.SortOrder;
 
         await _categoryRepository.UpdateAsync(category);
-        Logger.LogInformation("تم تعديل التصنيف: {Name} (Id: {Id})", category.Name, category.Id);
-        return ObjectMapper.Map<Category, CategoryDto>(category);
+        Logger.LogInformation("تم تعديل التصنيف: {Id}", id);
+        return _mapper.ToCategoryDto(category);
     }
 
     /// <summary>
@@ -340,8 +342,8 @@ public class CategoryAppService : ApplicationService, ICategoryAppService
         var result = new List<CategoryDto>();
         foreach (var root in roots)
         {
-            var dto = ObjectMapper.Map<Category, CategoryDto>(root);
-            var children = all.Where(c => c.ParentId == root.Id).OrderBy(c => c.SortOrder).ToList();
+            var dto = _mapper.ToCategoryDto(root);
+            var children = all.Where(c => c.ParentId == root.Id).OrderBy(c => c.SortOrder).ThenBy(c => c.Name).ToList();
             dto.Children = BuildTree(children, all);
             result.Add(dto);
         }

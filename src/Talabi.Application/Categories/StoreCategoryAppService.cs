@@ -25,6 +25,7 @@ public class StoreCategoryAppService : ApplicationService, IStoreCategoryAppServ
     #region Fields
 
     private readonly IRepository<StoreCategory, Guid> _storeCategoryRepository;
+    private readonly CategoryMapper _mapper;
 
     #endregion
 
@@ -36,6 +37,7 @@ public class StoreCategoryAppService : ApplicationService, IStoreCategoryAppServ
     public StoreCategoryAppService(IRepository<StoreCategory, Guid> storeCategoryRepository)
     {
         _storeCategoryRepository = storeCategoryRepository;
+        _mapper = new CategoryMapper();
     }
 
     #endregion
@@ -84,7 +86,7 @@ public class StoreCategoryAppService : ApplicationService, IStoreCategoryAppServ
 
         return new PagedResultDto<StoreCategoryDto>(
             totalCount,
-            ObjectMapper.Map<List<StoreCategory>, List<StoreCategoryDto>>(items));
+            _mapper.ToStoreCategoryDtoList(items));
     }
 
     /// <summary>
@@ -93,7 +95,7 @@ public class StoreCategoryAppService : ApplicationService, IStoreCategoryAppServ
     public async Task<StoreCategoryDto> GetAsync(Guid id)
     {
         var category = await _storeCategoryRepository.GetAsync(id);
-        return ObjectMapper.Map<StoreCategory, StoreCategoryDto>(category);
+        return _mapper.ToStoreCategoryDto(category);
     }
 
     /// <summary>
@@ -135,7 +137,7 @@ public class StoreCategoryAppService : ApplicationService, IStoreCategoryAppServ
 
         await _storeCategoryRepository.InsertAsync(category);
         Logger.LogInformation("تم إنشاء تصنيف متجر جديد: {Name} للمتجر: {StoreId}", category.CustomName, category.StoreId);
-        return ObjectMapper.Map<StoreCategory, StoreCategoryDto>(category);
+        return _mapper.ToStoreCategoryDto(category);
     }
 
     /// <summary>
@@ -162,7 +164,7 @@ public class StoreCategoryAppService : ApplicationService, IStoreCategoryAppServ
 
         await _storeCategoryRepository.UpdateAsync(category);
         Logger.LogInformation("تم تعديل تصنيف المتجر: {Id}", id);
-        return ObjectMapper.Map<StoreCategory, StoreCategoryDto>(category);
+        return _mapper.ToStoreCategoryDto(category);
     }
 
     /// <summary>
@@ -298,7 +300,7 @@ public class StoreCategoryAppService : ApplicationService, IStoreCategoryAppServ
         var result = new List<StoreCategoryDto>();
         foreach (var root in roots)
         {
-            var dto = ObjectMapper.Map<StoreCategory, StoreCategoryDto>(root);
+            var dto = _mapper.ToStoreCategoryDto(root);
             var children = all.Where(c => c.ParentId == root.Id).OrderBy(c => c.SortOrder).ToList();
             dto.Children = BuildStoreCategoryTree(children, all);
             result.Add(dto);

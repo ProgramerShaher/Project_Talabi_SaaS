@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Talabi.MediaFiles.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Content;
 
 namespace Talabi.MediaFiles;
 
@@ -21,6 +22,11 @@ public interface IMediaFileAppService : IApplicationService
     /// جلب تفاصيل ملف باستخدام المعرف
     /// </summary>
     Task<MediaFileDto> GetAsync(Guid id);
+
+    /// <summary>
+    /// جلب محتوى الملف (للتحميل أو العرض المباشر)
+    /// </summary>
+    Task<IRemoteStreamContent> GetContentAsync(string fileName);
 
     /// <summary>
     /// حذف ملف من النظام والخادم

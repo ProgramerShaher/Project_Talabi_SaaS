@@ -45,4 +45,26 @@ public static class TalabiPermissions
         public const string Delete  = Default + ".Delete";
         public const string Import  = Default + ".Import";
     }
+
+    /// <summary>
+    /// صلاحيات إدارة المتاجر
+    /// </summary>
+    public static class Stores
+    {
+        public const string Default = GroupName + ".Stores";
+        public const string Create  = Default + ".Create";
+        public const string Edit    = Default + ".Edit";
+        public const string Delete  = Default + ".Delete";
+    }
+
+    /// <summary>
+    /// صلاحيات إدارة أنواع المتاجر
+    /// </summary>
+    public static class StoreTypes
+    {
+        public const string Default = GroupName + ".StoreTypes";
+        public const string Create  = Default + ".Create";
+        public const string Edit    = Default + ".Edit";
+        public const string Delete  = Default + ".Delete";
+    }
 }

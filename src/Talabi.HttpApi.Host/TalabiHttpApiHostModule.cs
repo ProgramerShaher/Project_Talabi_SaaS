@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +30,11 @@ using Volo.Abp.Security.Claims;
 using Volo.Abp.Swashbuckle;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.VirtualFileSystem;
+using Volo.Abp.BlobStoring;
+using Volo.Abp.BlobStoring.FileSystem;
+using Talabi.MediaFiles;
+using Talabi.Notifications;
+using Microsoft.AspNetCore.Builder;
 
 namespace Talabi;
 
@@ -41,7 +47,8 @@ namespace Talabi;
     typeof(AbpAspNetCoreMvcUiLeptonXLiteThemeModule),
     typeof(AbpAccountWebOpenIddictModule),
     typeof(AbpAspNetCoreSerilogModule),
-    typeof(AbpSwashbuckleModule)
+    typeof(AbpSwashbuckleModule),
+    typeof(AbpBlobStoringFileSystemModule)
 )]
 public class TalabiHttpApiHostModule : AbpModule
 {
@@ -70,6 +77,22 @@ public class TalabiHttpApiHostModule : AbpModule
         ConfigureVirtualFileSystem(context);
         ConfigureCors(context, configuration);
         ConfigureSwaggerServices(context, configuration);
+        ConfigureBlobStoring(context, hostingEnvironment);
+    }
+
+    private void ConfigureBlobStoring(ServiceConfigurationContext context, IWebHostEnvironment hostingEnvironment)
+    {
+        Configure<AbpBlobStoringOptions>(options =>
+        {
+            options.Containers.Configure<MediaContainer>(container =>
+            {
+                container.UseFileSystem(fileSystem =>
+                {
+                    // حفظ الملفات في مجلد wwwroot/uploads/media
+                    fileSystem.BasePath = Path.Combine(hostingEnvironment.WebRootPath ?? Path.Combine(hostingEnvironment.ContentRootPath, "wwwroot"), "uploads", "media");
+                });
+            });
+        });
     }
 
     private void ConfigureAuthentication(ServiceConfigurationContext context)
@@ -219,6 +242,9 @@ public class TalabiHttpApiHostModule : AbpModule
 
         app.UseAuditing();
         app.UseAbpSerilogEnrichers();
-        app.UseConfiguredEndpoints();
+        app.UseConfiguredEndpoints(builder =>
+        {
+            builder.MapHub<TalabiNotificationHub>("/signalr-hubs/notifications");
+        });
     }
 }

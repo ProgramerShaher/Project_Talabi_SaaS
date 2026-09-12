@@ -10,6 +10,8 @@ using Talabi.MediaFiles.Dtos;
 using Volo.Abp;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.BlobStoring;
+using Volo.Abp.Content;
 
 namespace Talabi.MediaFiles;
 
@@ -20,20 +22,20 @@ namespace Talabi.MediaFiles;
 public class MediaFileAppService : ApplicationService, IMediaFileAppService
 {
     private readonly IRepository<MediaFile, Guid> _mediaFileRepository;
+    private readonly IBlobContainer<MediaContainer> _blobContainer;
     private readonly IConfiguration _configuration;
-    private readonly string _uploadPath;
     private readonly long _maxFileSizeBytes;
     private readonly string[] _allowedExtensions;
 
     public MediaFileAppService(
         IRepository<MediaFile, Guid> mediaFileRepository,
+        IBlobContainer<MediaContainer> blobContainer,
         IConfiguration configuration)
     {
         _mediaFileRepository = mediaFileRepository;
+        _blobContainer = blobContainer;
         _configuration = configuration;
 
-        // قراءة الإعدادات من appsettings.json
-        _uploadPath = _configuration["MediaStorage:LocalUploadPath"] ?? "wwwroot/uploads/media";
         var maxFileSizeMb = int.Parse(_configuration["MediaStorage:MaxFileSizeMb"] ?? "10");
         _maxFileSizeBytes = maxFileSizeMb * 1024 * 1024;
         
@@ -63,13 +65,6 @@ public class MediaFileAppService : ApplicationService, IMediaFileAppService
             throw new UserFriendlyException($"نوع الملف غير مدعوم. الأنواع المدعومة: {string.Join(", ", _allowedExtensions)}");
         }
 
-        // إنشاء المجلد إذا لم يكن موجوداً
-        var targetDirectory = Path.Combine(Directory.GetCurrentDirectory(), _uploadPath);
-        if (!Directory.Exists(targetDirectory))
-        {
-            Directory.CreateDirectory(targetDirectory);
-        }
-
         // قراءة الملف وحساب Hash
         using var stream = input.File.GetStream();
         using var memoryStream = new MemoryStream();
@@ -88,18 +83,12 @@ public class MediaFileAppService : ApplicationService, IMediaFileAppService
 
         // توليد اسم ملف فريد
         var uniqueFileName = $"{Guid.NewGuid():N}{extension}";
-        var physicalPath = Path.Combine(targetDirectory, uniqueFileName);
 
-        // حفظ الملف على القرص
-        await File.WriteAllBytesAsync(physicalPath, fileBytes);
+        // حفظ الملف في الـ Blob Container
+        await _blobContainer.SaveAsync(uniqueFileName, fileBytes, overrideExisting: true);
 
-        // بناء الرابط العام
-        // إزالة 'wwwroot' من المسار إذا كانت موجودة لإنشاء رابط URL صحيح
-        var urlPath = _uploadPath.StartsWith("wwwroot/") || _uploadPath.StartsWith("wwwroot\\") 
-            ? _uploadPath.Substring(8) 
-            : _uploadPath;
-            
-        var publicUrl = $"/{urlPath.Replace('\\', '/')}/{uniqueFileName}";
+        // بناء الرابط العام للوصول إلى الملف (الـ Blob)
+        var publicUrl = $"/api/app/media-file/{uniqueFileName}/content";
 
         // إنشاء السجل في قاعدة البيانات
         var mediaFile = new MediaFile(
@@ -107,9 +96,9 @@ public class MediaFileAppService : ApplicationService, IMediaFileAppService
             fileName: uniqueFileName,
             contentType: input.File.ContentType ?? "application/octet-stream",
             fileSize: fileBytes.Length,
-            storageProvider: "LocalFileSystem",
-            bucketName: "local-uploads",
-            objectKey: physicalPath,
+            storageProvider: "BlobStoring",
+            bucketName: "talabi-media-container",
+            objectKey: uniqueFileName,
             publicUrl: publicUrl
         )
         {
@@ -123,7 +112,7 @@ public class MediaFileAppService : ApplicationService, IMediaFileAppService
 
         await _mediaFileRepository.InsertAsync(mediaFile, autoSave: true);
 
-        Logger.LogInformation("تم رفع ملف جديد بنجاح وحفظه في: {Path}", physicalPath);
+        Logger.LogInformation("تم رفع ملف جديد بنجاح عبر Blob Storing: {Name}", uniqueFileName);
 
         return MapToDto(mediaFile);
     }
@@ -134,21 +123,36 @@ public class MediaFileAppService : ApplicationService, IMediaFileAppService
         return MapToDto(mediaFile);
     }
 
+    [AllowAnonymous]
+    public async Task<IRemoteStreamContent> GetContentAsync(string fileName)
+    {
+        var stream = await _blobContainer.GetAsync(fileName);
+        if (stream == null)
+        {
+            throw new UserFriendlyException("الملف غير موجود");
+        }
+
+        var mediaFile = await _mediaFileRepository.FirstOrDefaultAsync(x => x.ObjectKey == fileName);
+        var contentType = mediaFile?.ContentType ?? "application/octet-stream";
+
+        return new RemoteStreamContent(stream, fileName, contentType);
+    }
+
     public async Task DeleteAsync(Guid id)
     {
         var mediaFile = await _mediaFileRepository.GetAsync(id);
         
-        // حذف الملف الفعلي من القرص
-        if (mediaFile.StorageProvider == "LocalFileSystem" && File.Exists(mediaFile.ObjectKey))
+        // حذف الملف الفعلي من حاوية Blob
+        if (mediaFile.StorageProvider == "BlobStoring")
         {
             try
             {
-                File.Delete(mediaFile.ObjectKey);
-                Logger.LogInformation("تم حذف الملف من القرص: {Path}", mediaFile.ObjectKey);
+                await _blobContainer.DeleteAsync(mediaFile.ObjectKey);
+                Logger.LogInformation("تم حذف الملف من حاوية التخزين: {Key}", mediaFile.ObjectKey);
             }
             catch (Exception ex)
             {
-                Logger.LogWarning(ex, "فشل في حذف الملف من القرص: {Path}", mediaFile.ObjectKey);
+                Logger.LogWarning(ex, "فشل في حذف الملف من الحاوية: {Key}", mediaFile.ObjectKey);
             }
         }
 

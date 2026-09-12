@@ -1,0 +1,1236 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "metadata": {
+    "projectName": "Talabi SaaS - منصة طلبي",
+    "description": "بيانات تجريبية وافتراضية واقعية وشاملة لجميع كيانات النظام الـ 30 مع شرح وترجمة عربية كاملة لجميع الحقول والمصطلحات",
+    "generatedAt": "2026-09-11T21:15:00Z",
+    "version": "1.1.0"
+  },
+
+  "_dictionary_قاموس_وترجمة_الحقول": {
+    "StoreTypes_أنواع_المتاجر": {
+      "id": "المعرف الفريد لنوع المتجر (GUID)",
+      "name": "اسم نوع النشاط (مثال: مطاعم، بقالة، صيدلية)",
+      "iconUrl": "رابط أيقونة نوع المتجر",
+      "displayOrder": "ترتيب العرض في واجهة التطبيق",
+      "isActive": "هل نوع النشاط مفعل في النظام؟"
+    },
+    "Stores_المتاجر": {
+      "id": "المعرف الفريد للمتجر (GUID)",
+      "tenantId": "معرف المستأجر في منصة SaaS المتعددة",
+      "ownerId": "معرف المستخدم المالك للمتجر",
+      "storeTypeId": "معرف نوع ونشاط المتجر",
+      "name": "الاسم التجاري للمتجر",
+      "slug": "الرابط اللطيف للمتجر في المتصفح (مثال: al-shaibani-royal)",
+      "description": "الوصف والنبذة التعريفية عن المتجر",
+      "logoUrl": "رابط شعار المتجر (اللوجو)",
+      "coverImageUrl": "رابط صورة غلاف المتجر (البانر الإعلاني)",
+      "phone": "رقم هاتف المتجر للتواصل وخدمة العملاء",
+      "email": "البريد الإلكتروني للمتجر",
+      "address": "العنوان النصي التفصيلي لموقع المتجر",
+      "latitude": "إحداثي خط العرض الجغرافي للمتجر على الخريطة",
+      "longitude": "إحداثي خط الطول الجغرافي للمتجر على الخريطة",
+      "workingHoursJson": "ساعات وأيام عمل المتجر بتنسيق JSON",
+      "minimumOrderAmount": "الحد الأدنى لقيمة الطلب المسموح بها",
+      "deliveryFee": "رسوم التوصيل الأساسية للمتجر",
+      "averageDeliveryTime": "متوسط وقت التوصيل المتوقع بالدقائق",
+      "status": "حالة المتجر التشغيلية (1: بانتظار الموافقة، 2: معتمد ومفعل، 3: موقوف)",
+      "isActive": "هل المتجر مفتوح ومستعد لاستقبال الطلبات الآن؟",
+      "isFeatured": "هل المتجر مميز ويظهر في أعلى الصفحة الرئيسية؟",
+      "rating": "متوسط تقييم المتجر (من 0 إلى 5 نجوم)",
+      "totalReviews": "إجمالي عدد التقييمات المسجلة للمتجر",
+      "totalOrders": "إجمالي عدد الطلبات المنفذة عبر المتجر"
+    },
+    "StoreUsers_موظفو_المتجر": {
+      "id": "المعرف الفريد لسجل الموظف",
+      "storeId": "معرف المتجر الذي يعمل به الموظف",
+      "userId": "معرف حساب المستخدم التابع له الموظف",
+      "role": "دور وصلاحية الموظف (1: مالك المتجر Owner، 2: مدير المتجر Manager، 3: موظف عادي Employee)",
+      "joinedAt": "تاريخ ووقت انضمام الموظف للعمل بالمتجر"
+    },
+    "Customers_العملاء": {
+      "id": "المعرف الفريد لبيانات العميل (GUID)",
+      "userId": "معرف حساب المستخدم الأساسي في جدول مستخدمي ABP",
+      "dateOfBirth": "تاريخ ميلاد العميل",
+      "gender": "جنس العميل (1: ذكر، 2: أنثى)",
+      "loyaltyPoints": "رصيد نقاط الولاء والمكافآت التراكمية للعميل",
+      "preferredLanguage": "رمز اللغة المفضلة للواجهة (مثال: 'ar' للعربية)"
+    },
+    "CustomerAddresses_عناوين_العميل": {
+      "id": "المعرف الفريد للعنوان",
+      "customerId": "معرف العميل صاحب العنوان",
+      "title": "تسمية العنوان (المنزل، العمل، الاستراحة...)",
+      "latitude": "إحداثي خط العرض للموقع على GPS",
+      "longitude": "إحداثي خط الطول للموقع على GPS",
+      "city": "اسم المدينة (مثال: صنعاء، عدن)",
+      "district": "اسم الحي أو المنطقة (مثال: حدة، المعلا)",
+      "street": "اسم الشارع",
+      "building": "اسم أو رقم العمارة / المبنى",
+      "floor": "رقم الطابق",
+      "apartment": "رقم الشقة أو المكتب",
+      "additionalDetails": "علامات مميزة أو تعليمات إضافية للمندوب",
+      "isDefault": "هل هذا هو العنوان الافتراضي المختار للتوصيل؟"
+    },
+    "Categories_التصنيفات_العامة": {
+      "id": "المعرف الفريد للتصنيف العام",
+      "parentId": "معرف التصنيف الأب (إذا كان التصنيف فرعياً، أو null إذا كان رئيسياً)",
+      "name": "اسم التصنيف (وجبات سريعة، مشروبات، بقالة)",
+      "slug": "الرابط اللطيف للتصنيف في المتصفح",
+      "description": "وصف التصنيف وما يحتويه من أقسام",
+      "iconUrl": "رابط أيقونة التصنيف",
+      "imageUrl": "رابط صورة بانر التصنيف",
+      "isGlobal": "هل التصنيف عام على مستوى كامل المنصة؟",
+      "isActive": "هل التصنيف مفعل ومعروض للعملاء؟",
+      "sortOrder": "ترتيب ظهور التصنيف في القوائم",
+      "level": "مستوى عمق التصنيف في الشجرة (1: رئيسي، 2: فرعي أول)",
+      "path": "المسار الهرمي للتصنيف"
+    },
+    "StoreCategories_تصنيفات_المتجر_المخصصة": {
+      "id": "المعرف الفريد لتصنيف المتجر الداخلي",
+      "storeId": "معرف المتجر الذي يمتلك هذا التصنيف",
+      "parentId": "معرف التصنيف الأب داخل المتجر",
+      "globalCategoryId": "معرف التصنيف العام المرتبط به (إن وجد)",
+      "customName": "الاسم المخصص للتصنيف كما يحدده صاحب المتجر",
+      "customIconUrl": "أيقونة مخصصة للتصنيف داخل المتجر",
+      "description": "وصف التصنيف الخاص بالمتجر",
+      "isHidden": "هل التصنيف مخفي مؤقتاً عن الزوار؟",
+      "isActive": "هل التصنيف نشط؟",
+      "sortOrder": "ترتيب ظهور القسم في قائمة طعام/منتجات المتجر"
+    },
+    "Products_المنتجات": {
+      "id": "المعرف الفريد للمنتج (GUID)",
+      "tenantId": "معرف المستأجر",
+      "storeId": "معرف المتجر التابع له المنتج",
+      "storeCategoryId": "معرف تصنيف المتجر التابع له المنتج",
+      "name": "اسم المنتج التجاري",
+      "slug": "الرابط اللطيف للمنتج",
+      "description": "الوصف التفصيلي لمكونات ومواصفات المنتج",
+      "shortDescription": "وصف مختصر يظهر في بطاقة المنتج",
+      "sku": "رمز تمييز وتتبع المخزون الفريد (Stock Keeping Unit)",
+      "barcode": "رقم الباركود الدولي للمنتج",
+      "price": "السعر الأساسي للمنتج قبل الخصم",
+      "discount": "قيمة أو نسبة الخصم المالي",
+      "discountType": "نوع الخصم (1: مبلغ ثابت Fixed، 2: نسبة مئوية Percentage)",
+      "finalPrice": "السعر النهائي للمنتج بعد تطبيق الخصم (المحسوب تلقائياً)",
+      "costPrice": "سعر تكلفة شراء/صنع المنتج على التاجر",
+      "unit": "وحدة البيع (حبة، كرتون، كيلو، صحن)",
+      "brand": "العلامة التجارية للمنتج",
+      "weight": "وزن المنتج الصافي",
+      "weightUnit": "وحدة الوزن (جم، كجم، لتر)",
+      "origin": "بلد منشأ وتصنيع المنتج",
+      "mainImageUrl": "رابط الصورة الرئيسية للمنتج",
+      "isAvailable": "هل المنتج متوفر حالياً للطلب؟",
+      "isActive": "هل المنتج مفعل في النظام؟",
+      "isFeatured": "هل المنتج مميز ويظهر في قائمة العروض الخاصة؟",
+      "tags": "كلمات مفتاحية للبحث عن المنتج مفصولة بفواصل",
+      "minOrderQuantity": "أقل كمية مسموح بشرائها في الطلب الواحد",
+      "maxOrderQuantity": "أقصى كمية مسموح بشرائها في الطلب الواحد"
+    },
+    "ProductImages_صور_المنتج": {
+      "id": "المعرف الفريد للصورة",
+      "productId": "معرف المنتج التابعة له الصورة",
+      "imageUrl": "رابط الصورة الأصلية عالية الدقة",
+      "thumbnailUrl": "رابط الصورة المصغرة سريعة التحميل",
+      "altText": "النص البديل لوصف الصورة لمحركات البحث وسهولة الوصول",
+      "displayOrder": "ترتيب ظهور الصورة في معرض صور المنتج",
+      "isPrimary": "هل هذه هي الصورة الأساسية للمنتج؟"
+    },
+    "Inventories_المخزون": {
+      "id": "المعرف الفريد لسجل المخزون",
+      "tenantId": "معرف المستأجر",
+      "storeId": "معرف المتجر",
+      "productId": "معرف المنتج المخزن",
+      "currentQuantity": "الكمية الفعلية الموجودة في المستودع/المحل",
+      "reservedQuantity": "الكمية المحجوزة في طلبات جاري توصيلها للعملاء",
+      "availableQuantity": "الكمية المتاحة للبيع الفوري (الحالية ناقص المحجوزة)",
+      "minStockLevel": "الحد الأدنى الحرج لمستوى المخزون",
+      "maxStockLevel": "الحد الأقصى لسعة استيعاب المخزون",
+      "reorderLevel": "نقطة إعادة الطلب (تنبيه التاجر للشراء عند وصول الكمية إليها)",
+      "warehouseLocation": "موقع الصنف داخل المخزن (الممر، الرف، الثلاجة)",
+      "lastRestockedAt": "تاريخ آخر عملية توريد وتزويد للمخزون",
+      "isTracked": "هل يتم تتبع مخزون هذا الصنف وتحديثه آلياً مع كل طلب؟"
+    },
+    "Carts_سلال_المشتريات": {
+      "id": "المعرف الفريد للسلة",
+      "customerId": "معرف العميل صاحب السلة",
+      "storeId": "معرف المتجر المفتوحة السلة منه",
+      "isActive": "هل السلة نشطة حالياً ولم تتحول لطلب مكتمل بعد؟",
+      "expiresAt": "تاريخ انتهاء صلاحية السلة وإفراغها آلياً",
+      "lastActivityAt": "تاريخ آخر تعديل أو إضافة في السلة",
+      "totalAmount": "إجمالي قيمة المنتجات المضافة في السلة"
+    },
+    "CartItems_عناصر_السلة": {
+      "id": "المعرف الفريد للعنصر في السلة",
+      "cartId": "معرف السلة التابع لها",
+      "productId": "معرف المنتج المضاف",
+      "quantity": "الكمية المحددة من هذا المنتج",
+      "unitPriceAtAddition": "سعر الحبة وقت إضافتها للسلة لحفظ السعر",
+      "notes": "ملاحظات مخصصة من العميل لتحضير هذا الصنف",
+      "addedAt": "وقت إضافة الصنف للسلة"
+    },
+    "OrderStatuses_حالات_الطلب": {
+      "id": "المعرف الفريد للحالة",
+      "name": "الرمز التقني للحالة بالإنجليزية (Pending, Preparing, Delivered...)",
+      "displayName": "الاسم الظاهر للعميل والمتجر بالعربية",
+      "color": "كود اللون المعبر عن الحالة (Hex Code)",
+      "icon": "أيقونة الحالة في شاشات التتبع",
+      "displayOrder": "ترتيب تسلسل مراحل الطلب",
+      "isFinal": "هل هذه الحالة نهائية (مثل: تم التسليم أو ملغي)؟"
+    },
+    "CancellationReasons_أسباب_الإلغاء_والرفض": {
+      "id": "المعرف الفريد للسبب",
+      "reason": "النص التوضيحي لسبب الإلغاء أو الرفض",
+      "targetAudience": "الجهة المعنية بالسبب (1: للعميل Customer، 2: للمتجر Store، 3: للجميع Both)",
+      "isActive": "هل سبب الإلغاء متاح للاختيار حالياً؟"
+    },
+    "Orders_الطلبات": {
+      "id": "المعرف الفريد للطلب (GUID)",
+      "tenantId": "معرف المستأجر",
+      "orderNumber": "رقم الطلب التسلسلي الواضح (مثال: ORD-2026-1001)",
+      "customerId": "معرف العميل صاحب الطلب",
+      "storeId": "معرف المتجر المنفذ للطلب",
+      "deliveryAddressId": "معرف عنوان التوصيل المحدد",
+      "deliveryAddressSnapshot": "لقطة مجمدة لتفاصيل العنوان وقت الطلب (لحمايته من التغيير اللاحق)",
+      "subTotal": "المجموع الفرعي لقيمة المنتجات قبل الخصومات والرسوم",
+      "discountAmount": "إجمالي قيمة الخصم المالي المطبق على الطلب",
+      "deliveryFee": "رسوم التوصيل المحددة للطلب",
+      "taxAmount": "قيمة الضرائب المطبقة (إن وجدت)",
+      "finalAmount": "المبلغ الإجمالي النهائي المطلوب سداده",
+      "orderStatusId": "معرف حالة الطلب الحالية",
+      "paymentStatus": "حالة دفع الطلب (1: غير مدفوع Unpaid، 2: مدفوع جزئياً، 3: مدفوع بالكامل Paid، 4: مسترجع Refunded)",
+      "paymentMethodId": "معرف طريقة الدفع المختارة",
+      "courierId": "معرف مندوب التوصيل المكلف بالطلب (null إذا لم يتم التعيين بعد)",
+      "customerNotes": "ملاحظات وتعليمات العميل للمتجر والمندوب",
+      "storeNotes": "ملاحظات داخلية خاصة بالمتجر والتغليف",
+      "estimatedDeliveryTime": "وقت الوصول المتوقع المقدر للطلب",
+      "actualDeliveryTime": "وقت التسليم الفعلي عند باب العميل",
+      "confirmedAt": "تاريخ ووقت تأكيد استلام الطلب رسمياً",
+      "cancelledAt": "تاريخ ووقت إلغاء الطلب (null إذا لم يلغَ)"
+    },
+    "OrderItems_عناصر_الطلب": {
+      "id": "المعرف الفريد لعنصر الطلب",
+      "orderId": "معرف الطلب التابع له",
+      "productId": "معرف المنتج",
+      "productName": "اسم المنتج وقت الطلب (Snapshot)",
+      "productImageUrl": "رابط صورة المنتج وقت الشراء",
+      "sku": "رمز الصنف SKU",
+      "unit": "وحدة قياس الصنف",
+      "quantity": "الكمية المشتراة",
+      "unitPrice": "سعر الحبة وقت الشراء",
+      "discount": "الخصم المطبق على هذا الصنف",
+      "totalPrice": "إجمالي سعر هذا الصنف (الكمية × السعر النهائي)",
+      "notes": "ملاحظات تحضير هذا الصنف المحددة من العميل"
+    },
+    "OrderStatusHistories_سجل_تتبع_حالات_الطلب": {
+      "id": "المعرف الفريد لسجل الحالة",
+      "orderId": "معرف الطلب",
+      "fromStatusId": "الحالة السابقة التي كان عليها الطلب",
+      "toStatusId": "الحالة الجديدة التي تحول إليها الطلب",
+      "changedByUserId": "معرف المستخدم الذي قام بتغيير الحالة",
+      "changedByRole": "دور وصفة المغير (Customer, StoreManager, Courier, System)",
+      "notes": "ملاحظات توضيحية لسبب الانتقال للحالة الجديدة",
+      "creationTime": "وقت وتاريخ حدوث التغيير بدقة"
+    },
+    "OrderRejections_سجلات_رفض_الطلبات": {
+      "id": "المعرف الفريد لسجل الرفض",
+      "orderId": "معرف الطلب المرفوض",
+      "storeId": "معرف المتجر الرافض للطلب",
+      "rejectedByUserId": "معرف الموظف الذي قام برفض الطلب",
+      "rejectionReasonId": "معرف سبب الرفض المحدد من القائمة",
+      "additionalNotes": "ملاحظات تفصيلية لسبب عدم القدرة على تنفيذ الطلب",
+      "rejectedAt": "وقت وتاريخ الرفض"
+    },
+    "OrderCancellations_سجلات_إلغاء_الطلبات": {
+      "id": "المعرف الفريد لسجل الإلغاء",
+      "orderId": "معرف الطلب الملغي",
+      "cancelledByUserId": "معرف المستخدم الذي قام بالإلغاء (العميل أو مدير النظام)",
+      "cancellationReasonId": "معرف سبب الإلغاء",
+      "additionalNotes": "توضيحات إضافية لسبب الإلغاء",
+      "cancelledAt": "وقت وتاريخ الإلغاء"
+    },
+    "PaymentMethods_طرق_الدفع": {
+      "id": "المعرف الفريد لطريقة الدفع",
+      "name": "الرمز التقني لطريقة الدفع (CashOnDelivery, KuraimiJawali, OneCash)",
+      "displayName": "الاسم التجاري الظاهر للعميل بالعربية",
+      "iconUrl": "شعار وسيلة الدفع أو المحفظة الإلكترونية",
+      "isOnline": "هل الدفع إلكتروني عبر الإنترنت أم كاش يدوي؟",
+      "requiresReceipt": "هل يتطلب رفع صورة إشعار/إيصال تحويل للتحقق منه؟",
+      "isActive": "هل طريقة الدفع متاحة في النظام؟"
+    },
+    "Payments_المدفوعات": {
+      "id": "المعرف الفريد لعملية الدفع",
+      "tenantId": "معرف المستأجر",
+      "orderId": "معرف الطلب المسدد له",
+      "paymentMethodId": "معرف وسيلة الدفع المستخدمة",
+      "amount": "المبلغ المدفوع بالريال",
+      "currency": "رمز العملة (مثال: YER للريال اليمني، SAR للريال السعودي)",
+      "status": "حالة الدفع (1: معلق Pending، 2: ناجح ومؤكد Success، 3: فاشل Failed، 4: مسترجع Refunded)",
+      "transactionReference": "الرقم المرجعي لعملية الدفع أو الحوالة",
+      "paidAt": "تاريخ ووقت سداد المبلغ بنجاح",
+      "refundedAt": "تاريخ استرجاع المبلغ (إن حدث استرجاع)",
+      "refundAmount": "المبلغ المسترجع للعميل"
+    },
+    "PaymentReceipts_إيصالات_الدفع": {
+      "id": "المعرف الفريد لسجل الإيصال",
+      "paymentId": "معرف عملية الدفع المرتبطة",
+      "mediaFileId": "معرف ملف صورة الإيصال في جدول الميديا",
+      "walletName": "اسم المحفظة الإلكترونية أو البنك المحول منه",
+      "transactionNumber": "رقم الحوالة أو السند المدون في الإشعار",
+      "amount": "المبلغ المكتوب في الإشعار",
+      "verificationStatus": "حالة التدقيق والمراجعة (1: قيد المراجعة، 2: معتمد ومقبول، 3: مرفوض)",
+      "verifiedByUserId": "معرف الموظف/المحاسب الذي دقق الإيصال واعتمدته",
+      "verifiedAt": "تاريخ ووقت اعتماد أو رفض الإيصال",
+      "rejectionReason": "سبب الرفض في حال كان الإيصال غير مطابق أو وهمي",
+      "uploadedAt": "وقت رفع الإيصال من قِبل العميل"
+    },
+    "MediaFiles_ملفات_الوسائط": {
+      "id": "المعرف الفريد للملف المرفوع",
+      "tenantId": "معرف المستأجر",
+      "fileName": "اسم الملف العشوائي الآمن المخزن في السيرفر",
+      "originalFileName": "اسم الملف الأصلي في جهاز المستخدم وقت الرفع",
+      "contentType": "نوع محتوى الملف (مثال: image/webp, image/jpeg, application/pdf)",
+      "fileSize": "حجم الملف بالبايت",
+      "extension": "امتداد الملف (مثال: .webp)",
+      "storageProvider": "مزود التخزين (LocalFileSystem, AWSS3, AzureBlob)",
+      "bucketName": "اسم المجلد أو الحاوية التخزينية",
+      "objectKey": "المسار الداخلي الكامل لتخزين الملف",
+      "publicUrl": "الرابط المباشر لعرض وتنزيل الملف",
+      "thumbnailUrl": "رابط الصورة المصغرة",
+      "mediumUrl": "رابط الصورة متوسطة الحجم",
+      "optimizedUrl": "رابط الصورة المضغوطة للأجهزة البطيئة",
+      "width": "عرض الصورة بالبكسل",
+      "height": "ارتفاع الصورة بالبكسل",
+      "entityType": "نوع الكيان المرتبط بالصورة (Product, Store, PaymentReceipt...)",
+      "entityId": "معرف الكيان المرتبط بالملف",
+      "isPublic": "هل الملف متاح للعامة بدون تسجيل دخول؟",
+      "accessLevel": "مستوى أمان الملف (1: عام، 2: محمي، 3: خاص وحساس)",
+      "status": "حالة معالجة الملف وضغطه (1: قيد المعالجة، 2: جاهز ومكتمل)",
+      "uploadedAt": "تاريخ ووقت الرفع"
+    },
+    "Couriers_مناديب_التوصيل": {
+      "id": "المعرف الفريد للمندوب (GUID)",
+      "userId": "معرف حساب المستخدم الخاص بالمندوب",
+      "vehicleType": "نوع مركبة التوصيل (دراجة نارية، سيارة، باص)",
+      "vehicleNumber": "رقم لوحة المركبة المرخصة",
+      "licenseNumber": "رقم رخصة القيادة للمندوب",
+      "isAvailable": "هل المندوب متاح حالياً لاستلام وتوصيل طلبات جديدة؟",
+      "isOnline": "هل المندوب متصل بالنظام والتطبيق قيد التشغيل؟",
+      "currentLatitude": "إحداثي خط العرض اللحظي لموقع المندوب عبر GPS",
+      "currentLongitude": "إحداثي خط الطول اللحظي لموقع المندوب عبر GPS",
+      "lastLocationUpdate": "تاريخ آخر تحديث لنبضة الموقع الجغرافي للمندوب",
+      "rating": "متوسط تقييم المندوب من العملاء (من 1 إلى 5)",
+      "totalDeliveries": "إجمالي عدد مشاوير التوصيل الناجحة",
+      "totalEarnings": "إجمالي مستحقات وأرباح المندوب التراكمية"
+    },
+    "DeliveryAssignments_تعيينات_التوصيل": {
+      "id": "المعرف الفريد لمهمة التوصيل",
+      "orderId": "معرف الطلب المراد توصيله",
+      "courierId": "معرف المندوب المكلف بالمهمة",
+      "status": "حالة مهمة التوصيل (1: تم الإسناد، 2: قبل المندوب، 3: تم الاستلام من المتجر، 4: في الطريق، 5: تم التسليم، 6: فشل التوصيل)",
+      "assignedByUserId": "معرف الموظف أو النظام التلقائي الذي أسند الطلب للمندوب",
+      "assignedAt": "تاريخ ووقت إسناد الطلب",
+      "acceptedAt": "تاريخ موافقة وقبول المندوب للمهمة",
+      "pickupAt": "تاريخ ووقت استلام الطلب من المطعم/المتجر",
+      "deliveredAt": "تاريخ ووقت تسليم الطلب للعميل",
+      "estimatedArrival": "الوقت المقدر لوصول المندوب للعميل",
+      "distanceKm": "المسافة المقطوعة للتوصيل بالكيلومتر",
+      "deliveryFee": "رسوم التوصيل المحسوبة على العميل",
+      "courierEarning": "حصة وصافي ربح المندوب من المشوار"
+    },
+    "DeliveryConfirmations_إثباتات_وتأكيدات_التسليم": {
+      "id": "المعرف الفريد لإثبات التسليم",
+      "deliveryAssignmentId": "معرف مهمة التوصيل المرتبطة",
+      "confirmedBy": "الجهة المؤكدة للتسليم (1: العميل عبر الرمز، 2: المندوب، 3: النظام آلياً)",
+      "confirmedByUserId": "معرف المستخدم الذي أثبت الاستلام",
+      "verificationCode": "رمز التحقق السري (OTP) المكون من أرقام والذي يزوده العميل للمندوب",
+      "signatureUrl": "رابط صورة توقيع العميل على شاشة الهاتف",
+      "photoProofUrl": "رابط صورة إثبات تسليم الطلب عند الباب",
+      "notes": "ملاحظات إضافية عند تسليم الطلب",
+      "confirmedAt": "وقت التسليم والتأكيد بدقة"
+    },
+    "NotificationTypes_أنواع_الإشعارات": {
+      "id": "المعرف الفريد لنوع الإشعار",
+      "name": "الرمز التقني للإشعار (OrderStatusChanged, DeliveryAssignment)",
+      "displayName": "الاسم الظاهر لنوع الإشعار بالعربية",
+      "template": "قالب الرسالة مع المتغيرات القابلة للاستبدال",
+      "icon": "أيقونة الإشعار",
+      "color": "لون الإشعار",
+      "isActive": "هل هذا النوع من التنبيهات مفعل؟"
+    },
+    "AppNotifications_إشعارات_المستخدمين": {
+      "id": "المعرف الفريد للإشعار المرسل",
+      "recipientUserId": "معرف المستخدم المستلم للإشعار",
+      "notificationTypeId": "معرف نوع الإشعار",
+      "title": "عنوان الإشعار القصير",
+      "message": "نص محتوى رسالة الإشعار الكاملة",
+      "relatedEntityName": "نوع الكيان المرتبط بالإشعار (Order, Store...)",
+      "relatedEntityId": "معرف الكيان المرتبط (مثال: معرف الطلب)",
+      "actionUrl": "رابط الصفحة الذي يُفتح عند الضغط على الإشعار",
+      "isRead": "هل قام المستخدم بفتح وقراءة الإشعار؟",
+      "readAt": "تاريخ قراءة الإشعار",
+      "sentVia": "وسيلة الإرسال (PushNotification, InApp, SMS, Email)",
+      "creationTime": "تاريخ ووقت إرسال الإشعار"
+    },
+    "Reviews_التقييمات_والمراجعات": {
+      "id": "المعرف الفريد للتقييم",
+      "tenantId": "معرف المستأجر",
+      "orderId": "معرف الطلب المقيم",
+      "customerId": "معرف العميل صاحب التقييم",
+      "storeId": "معرف المتجر المقيم",
+      "courierId": "معرف مندوب التوصيل المقيم",
+      "storeRating": "تقييم المتجر العام (من 1 إلى 5 نجوم)",
+      "courierRating": "تقييم تعامل وسرعة مندوب التوصيل (من 1 إلى 5 نجوم)",
+      "productQualityRating": "تقييم جودة وطعم المنتجات (من 1 إلى 5 نجوم)",
+      "deliverySpeedRating": "تقييم سرعة وصول الطلب (من 1 إلى 5 نجوم)",
+      "comment": "التعليق النصي للعميل عن تجربته",
+      "storeReply": "رد المتجر الرسمي على تعليق العميل",
+      "storeRepliedAt": "تاريخ وتوقيت رد المتجر",
+      "isVisible": "هل التقييم معروض للعامة في صفحة المتجر؟"
+    },
+    "Favorites_المفضلة": {
+      "id": "المعرف الفريد لسجل المفضلة",
+      "customerId": "معرف العميل",
+      "entityType": "نوع العنصر المفضل (Product للمنتجات، Store للمتاجر)",
+      "entityId": "معرف المنتج أو المتجر المفضل",
+      "creationTime": "تاريخ إضافة العنصر إلى المفضلة"
+    }
+  },
+
+  "storeTypes_أنواع_المتاجر": [
+    {
+      "id": "11111111-1111-1111-1111-111111111101",
+      "name": "مطاعم ومأكولات",
+      "iconUrl": "https://cdn.talabi.com/icons/restaurants.svg",
+      "displayOrder": 1,
+      "isActive": true
+    },
+    {
+      "id": "11111111-1111-1111-1111-111111111102",
+      "name": "سوبرماركت وبقالة",
+      "iconUrl": "https://cdn.talabi.com/icons/supermarket.svg",
+      "displayOrder": 2,
+      "isActive": true
+    },
+    {
+      "id": "11111111-1111-1111-1111-111111111103",
+      "name": "صيدليات وعناية",
+      "iconUrl": "https://cdn.talabi.com/icons/pharmacy.svg",
+      "displayOrder": 3,
+      "isActive": true
+    }
+  ],
+
+  "stores_المتاجر": [
+    {
+      "id": "22222222-2222-2222-2222-222222222201",
+      "tenantId": "00000000-0000-0000-0000-000000000001",
+      "ownerId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "storeTypeId": "11111111-1111-1111-1111-111111111101",
+      "name": "مطعم الشيباني الملكي",
+      "slug": "al-shaibani-royal",
+      "description": "أشهى المأكولات اليمنية والشعبية والمشويات الطازجة على أيدي أمهر الطهاة",
+      "logoUrl": "https://cdn.talabi.com/stores/shaibani-logo.webp",
+      "coverImageUrl": "https://cdn.talabi.com/stores/shaibani-cover.webp",
+      "phone": "+967771234567",
+      "email": "info@shaibani-royal.com",
+      "address": "صنعاء - شارع حدة - بجوار بريد حدة",
+      "latitude": 15.321456,
+      "longitude": 44.195678,
+      "workingHoursJson": "{\"saturday\":{\"open\":\"08:00\",\"close\":\"23:30\"},\"sunday\":{\"open\":\"08:00\",\"close\":\"23:30\"},\"monday\":{\"open\":\"08:00\",\"close\":\"23:30\"},\"tuesday\":{\"open\":\"08:00\",\"close\":\"23:30\"},\"wednesday\":{\"open\":\"08:00\",\"close\":\"23:30\"},\"thursday\":{\"open\":\"08:00\",\"close\":\"00:30\"},\"friday\":{\"open\":\"12:30\",\"close\":\"00:30\"}}",
+      "minimumOrderAmount": 2000.00,
+      "deliveryFee": 700.00,
+      "averageDeliveryTime": 35,
+      "status": 2,
+      "isActive": true,
+      "isFeatured": true,
+      "rating": 4.85,
+      "totalReviews": 142,
+      "totalOrders": 850
+    },
+    {
+      "id": "22222222-2222-2222-2222-222222222202",
+      "tenantId": "00000000-0000-0000-0000-000000000001",
+      "ownerId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab",
+      "storeTypeId": "11111111-1111-1111-1111-111111111102",
+      "name": "سوبرماركت الجندول هايبر ماركت",
+      "slug": "al-jandoul-hypermarket",
+      "description": "جميع المواد الغذائية والاستهلاكية الطازجة والمستوردة بأفضل الأسعار اليومية",
+      "logoUrl": "https://cdn.talabi.com/stores/jandoul-logo.webp",
+      "coverImageUrl": "https://cdn.talabi.com/stores/jandoul-cover.webp",
+      "phone": "+967777889900",
+      "email": "orders@jandoul-hyper.com",
+      "address": "صنعاء - شارع الستين الجنوبي - جوار جولة المصباحي",
+      "latitude": 15.340123,
+      "longitude": 44.180456,
+      "workingHoursJson": "{\"allDays\":{\"open\":\"07:00\",\"close\":\"01:00\"}}",
+      "minimumOrderAmount": 3000.00,
+      "deliveryFee": 1000.00,
+      "averageDeliveryTime": 45,
+      "status": 2,
+      "isActive": true,
+      "isFeatured": true,
+      "rating": 4.60,
+      "totalReviews": 89,
+      "totalOrders": 520
+    }
+  ],
+
+  "storeUsers_موظفو_المتجر": [
+    {
+      "id": "33333333-3333-3333-3333-333333333301",
+      "storeId": "22222222-2222-2222-2222-222222222201",
+      "userId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "role": 1,
+      "joinedAt": "2026-01-01T08:00:00Z"
+    },
+    {
+      "id": "33333333-3333-3333-3333-333333333302",
+      "storeId": "22222222-2222-2222-2222-222222222201",
+      "userId": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbb01",
+      "role": 2,
+      "joinedAt": "2026-01-10T09:30:00Z"
+    },
+    {
+      "id": "33333333-3333-3333-3333-333333333303",
+      "storeId": "22222222-2222-2222-2222-222222222202",
+      "userId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab",
+      "role": 1,
+      "joinedAt": "2026-02-01T10:00:00Z"
+    }
+  ],
+
+  "customers_العملاء": [
+    {
+      "id": "44444444-4444-4444-4444-444444444401",
+      "userId": "cccccccc-cccc-cccc-cccc-cccccccccccc",
+      "dateOfBirth": "1994-06-15T00:00:00Z",
+      "gender": 1,
+      "loyaltyPoints": 350,
+      "preferredLanguage": "ar"
+    },
+    {
+      "id": "44444444-4444-4444-4444-444444444402",
+      "userId": "cccccccc-cccc-cccc-cccc-cccccccccccd",
+      "dateOfBirth": "1999-11-20T00:00:00Z",
+      "gender": 2,
+      "loyaltyPoints": 120,
+      "preferredLanguage": "ar"
+    }
+  ],
+
+  "customerAddresses_عناوين_العميل": [
+    {
+      "id": "55555555-5555-5555-5555-555555555501",
+      "customerId": "44444444-4444-4444-4444-444444444401",
+      "title": "المنزل",
+      "latitude": 15.334567,
+      "longitude": 44.198765,
+      "city": "صنعاء",
+      "district": "حدة",
+      "street": "شارع عمان",
+      "building": "عمارة النور",
+      "floor": "3",
+      "apartment": "6",
+      "additionalDetails": "بجوار سوبرماركت الهدى، البوابة الجنوبية",
+      "isDefault": true
+    },
+    {
+      "id": "55555555-5555-5555-5555-555555555502",
+      "customerId": "44444444-4444-4444-4444-444444444401",
+      "title": "العمل / الشركة",
+      "latitude": 15.356789,
+      "longitude": 44.201234,
+      "city": "صنعاء",
+      "district": "الزبيري",
+      "street": "شارع الزبيري",
+      "building": "برج سبأ التجاري",
+      "floor": "7",
+      "apartment": "مكتب 704",
+      "additionalDetails": "شركة التقنية للبرمجيات",
+      "isDefault": false
+    },
+    {
+      "id": "55555555-5555-5555-5555-555555555503",
+      "customerId": "44444444-4444-4444-4444-444444444402",
+      "title": "منزل العائلة",
+      "latitude": 15.378901,
+      "longitude": 44.212345,
+      "city": "صنعاء",
+      "district": "الاصبحي",
+      "street": "شارع المقالح",
+      "building": "فيلا 12",
+      "floor": "أرضي",
+      "apartment": "1",
+      "additionalDetails": "خلف مدرسة الرشيد",
+      "isDefault": true
+    }
+  ],
+
+  "categories_التصنيفات_العامة": [
+    {
+      "id": "66666666-6666-6666-6666-666666666601",
+      "parentId": null,
+      "name": "مأكولات ومشروبات",
+      "slug": "food-and-beverages",
+      "description": "كافة الوجبات السريعة والشعبية والمشروبات المتنوعة",
+      "iconUrl": "https://cdn.talabi.com/categories/food.svg",
+      "imageUrl": "https://cdn.talabi.com/categories/food-banner.webp",
+      "isGlobal": true,
+      "isActive": true,
+      "sortOrder": 1,
+      "level": 1,
+      "path": "/food-and-beverages"
+    },
+    {
+      "id": "66666666-6666-6666-6666-666666666602",
+      "parentId": "66666666-6666-6666-6666-666666666601",
+      "name": "وجبات شعبية ومشويات",
+      "slug": "traditional-and-grills",
+      "description": "مندي، زربيان، مشويات على الفحم، فحم وفحسة وسلتة",
+      "iconUrl": "https://cdn.talabi.com/categories/grills.svg",
+      "imageUrl": "https://cdn.talabi.com/categories/grills-banner.webp",
+      "isGlobal": true,
+      "isActive": true,
+      "sortOrder": 1,
+      "level": 2,
+      "path": "/food-and-beverages/traditional-and-grills"
+    },
+    {
+      "id": "66666666-6666-6666-6666-666666666603",
+      "parentId": null,
+      "name": "بقالة ومواد تموينية",
+      "slug": "groceries-and-pantry",
+      "description": "أرز، سكر، زيوت، ألبان، معلبات، ومنظفات منزلية",
+      "iconUrl": "https://cdn.talabi.com/categories/groceries.svg",
+      "imageUrl": "https://cdn.talabi.com/categories/groceries-banner.webp",
+      "isGlobal": true,
+      "isActive": true,
+      "sortOrder": 2,
+      "level": 1,
+      "path": "/groceries-and-pantry"
+    }
+  ],
+
+  "storeCategories_تصنيفات_المتجر_المخصصة": [
+    {
+      "id": "77777777-7777-7777-7777-777777777701",
+      "storeId": "22222222-2222-2222-2222-222222222201",
+      "parentId": null,
+      "globalCategoryId": "66666666-6666-6666-6666-666666666602",
+      "customName": "أطباق الأرز واللحوم الطازجة",
+      "customIconUrl": "https://cdn.talabi.com/store-categories/meat.svg",
+      "description": "وجبات اللحم البلدي الطازج والمندي الأصيل",
+      "isHidden": false,
+      "isActive": true,
+      "sortOrder": 1
+    },
+    {
+      "id": "77777777-7777-7777-7777-777777777702",
+      "storeId": "22222222-2222-2222-2222-222222222201",
+      "parentId": null,
+      "globalCategoryId": "66666666-6666-6666-6666-666666666601",
+      "customName": "المقبلات والشوربات الشعبية",
+      "customIconUrl": "https://cdn.talabi.com/store-categories/soups.svg",
+      "description": "مرق بلدي، سلطات طازجة، شفوت، وحلبة",
+      "isHidden": false,
+      "isActive": true,
+      "sortOrder": 2
+    },
+    {
+      "id": "77777777-7777-7777-7777-777777777703",
+      "storeId": "22222222-2222-2222-2222-222222222202",
+      "parentId": null,
+      "globalCategoryId": "66666666-6666-6666-6666-666666666603",
+      "customName": "الألبان والأجبان الطازجة",
+      "customIconUrl": "https://cdn.talabi.com/store-categories/dairy.svg",
+      "description": "حليب، زبادي، أجبان مستوردة ومحلية",
+      "isHidden": false,
+      "isActive": true,
+      "sortOrder": 1
+    }
+  ],
+
+  "products_المنتجات": [
+    {
+      "id": "88888888-8888-8888-8888-888888888801",
+      "tenantId": "00000000-0000-0000-0000-000000000001",
+      "storeId": "22222222-2222-2222-2222-222222222201",
+      "storeCategoryId": "77777777-7777-7777-7777-777777777701",
+      "name": "نصف حبة دجاج مندي مع الأرز البسمتي",
+      "slug": "half-chicken-mandi-rice",
+      "description": "دجاج طازج محمر على الطريقة الشعبية بالتنور مع أرز بسمتي فاخر ومكسرات ومرق بلدي وسحاوق جبن",
+      "shortDescription": "نصف دجاج مندي مع الأرز والصلصات",
+      "sku": "SHB-MND-001",
+      "barcode": "629100100101",
+      "price": 3500.00,
+      "discount": 500.00,
+      "discountType": 1,
+      "finalPrice": 3000.00,
+      "costPrice": 2200.00,
+      "unit": "صحن",
+      "brand": "الشيباني الملكي",
+      "weight": 850.00,
+      "weightUnit": "جم",
+      "origin": "اليمن",
+      "mainImageUrl": "https://cdn.talabi.com/products/chicken-mandi.webp",
+      "isAvailable": true,
+      "isActive": true,
+      "isFeatured": true,
+      "tags": "مندي,دجاج,غداء,شعبي",
+      "minOrderQuantity": 1,
+      "maxOrderQuantity": 20
+    },
+    {
+      "id": "88888888-8888-8888-8888-888888888802",
+      "tenantId": "00000000-0000-0000-0000-000000000001",
+      "storeId": "22222222-2222-2222-2222-222222222201",
+      "storeCategoryId": "77777777-7777-7777-7777-777777777701",
+      "name": "نفر لحم برمة بلدي طازج",
+      "slug": "yemeni-fresh-lamb-bormah",
+      "description": "لحم خروف بلدي طري مطهو ببطء في إناء الفخار مع البهارات الخاصة والمرق الغني",
+      "shortDescription": "لحم بلدي فخار مع المرق والخبز",
+      "sku": "SHB-BRM-002",
+      "barcode": "629100100102",
+      "price": 7500.00,
+      "discount": 0.00,
+      "discountType": 1,
+      "finalPrice": 7500.00,
+      "costPrice": 5800.00,
+      "unit": "صحن",
+      "brand": "الشيباني الملكي",
+      "weight": 600.00,
+      "weightUnit": "جم",
+      "origin": "اليمن",
+      "mainImageUrl": "https://cdn.talabi.com/products/lamb-bormah.webp",
+      "isAvailable": true,
+      "isActive": true,
+      "isFeatured": true,
+      "tags": "لحم,برمة,شعبي,بلدي",
+      "minOrderQuantity": 1,
+      "maxOrderQuantity": 10
+    },
+    {
+      "id": "88888888-8888-8888-8888-888888888803",
+      "tenantId": "00000000-0000-0000-0000-000000000001",
+      "storeId": "22222222-2222-2222-2222-222222222202",
+      "storeCategoryId": "77777777-7777-7777-7777-777777777703",
+      "name": "حليب نادك طازج كامل الدسم 2 لتر",
+      "slug": "nadec-fresh-milk-full-fat-2l",
+      "description": "حليب بقري نقي 100% غني بالكالسيوم والفيتامينات في عبوة عائلية محكمة الإغلاق",
+      "shortDescription": "حليب نادك 2 لتر طازج",
+      "sku": "JND-MLK-003",
+      "barcode": "628100700203",
+      "price": 2200.00,
+      "discount": 10.00,
+      "discountType": 2,
+      "finalPrice": 1980.00,
+      "costPrice": 1700.00,
+      "unit": "علبة",
+      "brand": "نادك",
+      "weight": 2.00,
+      "weightUnit": "كجم",
+      "origin": "السعودية",
+      "mainImageUrl": "https://cdn.talabi.com/products/nadec-milk.webp",
+      "isAvailable": true,
+      "isActive": true,
+      "isFeatured": false,
+      "tags": "حليب,ألبان,إفطار",
+      "minOrderQuantity": 1,
+      "maxOrderQuantity": 12
+    }
+  ],
+
+  "productImages_صور_المنتج": [
+    {
+      "id": "99999999-9999-9999-9999-999999999901",
+      "productId": "88888888-8888-8888-8888-888888888801",
+      "imageUrl": "https://cdn.talabi.com/products/chicken-mandi-angle1.webp",
+      "thumbnailUrl": "https://cdn.talabi.com/products/thumbs/chicken-mandi-1.webp",
+      "altText": "طبق نصف حبة مندي دجاج شهية مع الأرز",
+      "displayOrder": 1,
+      "isPrimary": true
+    },
+    {
+      "id": "99999999-9999-9999-9999-999999999902",
+      "productId": "88888888-8888-8888-8888-888888888801",
+      "imageUrl": "https://cdn.talabi.com/products/chicken-mandi-angle2.webp",
+      "thumbnailUrl": "https://cdn.talabi.com/products/thumbs/chicken-mandi-2.webp",
+      "altText": "مقبلات وسحاوق مع وجبة المندي",
+      "displayOrder": 2,
+      "isPrimary": false
+    },
+    {
+      "id": "99999999-9999-9999-9999-999999999903",
+      "productId": "88888888-8888-8888-8888-888888888802",
+      "imageUrl": "https://cdn.talabi.com/products/lamb-bormah-1.webp",
+      "thumbnailUrl": "https://cdn.talabi.com/products/thumbs/lamb-bormah-1.webp",
+      "altText": "برمة لحم بلدي في الفخار مع المرق",
+      "displayOrder": 1,
+      "isPrimary": true
+    }
+  ],
+
+  "inventories_المخزون": [
+    {
+      "id": "aaaaaaaa-1111-1111-1111-111111111101",
+      "tenantId": "00000000-0000-0000-0000-000000000001",
+      "storeId": "22222222-2222-2222-2222-222222222201",
+      "productId": "88888888-8888-8888-8888-888888888801",
+      "currentQuantity": 60,
+      "reservedQuantity": 4,
+      "availableQuantity": 56,
+      "minStockLevel": 10,
+      "maxStockLevel": 120,
+      "reorderLevel": 15,
+      "warehouseLocation": "مطبخ التنور - القسم الشرقي",
+      "lastRestockedAt": "2026-09-11T10:00:00Z",
+      "isTracked": true
+    },
+    {
+      "id": "aaaaaaaa-1111-1111-1111-111111111102",
+      "tenantId": "00000000-0000-0000-0000-000000000001",
+      "storeId": "22222222-2222-2222-2222-222222222201",
+      "productId": "88888888-8888-8888-8888-888888888802",
+      "currentQuantity": 25,
+      "reservedQuantity": 2,
+      "availableQuantity": 23,
+      "minStockLevel": 5,
+      "maxStockLevel": 40,
+      "reorderLevel": 8,
+      "warehouseLocation": "فرن الفخار البلدي",
+      "lastRestockedAt": "2026-09-11T11:00:00Z",
+      "isTracked": true
+    },
+    {
+      "id": "aaaaaaaa-1111-1111-1111-111111111103",
+      "tenantId": "00000000-0000-0000-0000-000000000001",
+      "storeId": "22222222-2222-2222-2222-222222222202",
+      "productId": "88888888-8888-8888-8888-888888888803",
+      "currentQuantity": 150,
+      "reservedQuantity": 10,
+      "availableQuantity": 140,
+      "minStockLevel": 20,
+      "maxStockLevel": 300,
+      "reorderLevel": 35,
+      "warehouseLocation": "ثلاجة الألبان رقم 3",
+      "lastRestockedAt": "2026-09-10T16:00:00Z",
+      "isTracked": true
+    }
+  ],
+
+  "carts_سلال_المشتريات": [
+    {
+      "id": "bbbbbbbb-2222-2222-2222-222222222201",
+      "customerId": "44444444-4444-4444-4444-444444444402",
+      "storeId": "22222222-2222-2222-2222-222222222201",
+      "isActive": true,
+      "expiresAt": "2026-09-12T20:55:00Z",
+      "lastActivityAt": "2026-09-11T20:45:00Z",
+      "totalAmount": 3000.00
+    }
+  ],
+
+  "cartItems_عناصر_السلة": [
+    {
+      "id": "cccccccc-3333-3333-3333-333333333301",
+      "cartId": "bbbbbbbb-2222-2222-2222-222222222201",
+      "productId": "88888888-8888-8888-8888-888888888801",
+      "quantity": 1,
+      "unitPriceAtAddition": 3000.00,
+      "notes": "الرجاء زيادة السحاوق بالجبن مع المرق الساخن",
+      "addedAt": "2026-09-11T20:45:00Z"
+    }
+  ],
+
+  "orderStatuses_حالات_الطلب": [
+    {
+      "id": "dddddddd-4444-4444-4444-444444444401",
+      "name": "Pending",
+      "displayName": "بانتظار قبول المتجر",
+      "color": "#F59E0B",
+      "icon": "clock",
+      "displayOrder": 1,
+      "isFinal": false
+    },
+    {
+      "id": "dddddddd-4444-4444-4444-444444444402",
+      "name": "Preparing",
+      "displayName": "جاري تحضير الطلب",
+      "color": "#3B82F6",
+      "icon": "chef-hat",
+      "displayOrder": 2,
+      "isFinal": false
+    },
+    {
+      "id": "dddddddd-4444-4444-4444-444444444403",
+      "name": "OutForDelivery",
+      "displayName": "المندوب في الطريق إليك",
+      "color": "#8B5CF6",
+      "icon": "bike",
+      "displayOrder": 3,
+      "isFinal": false
+    },
+    {
+      "id": "dddddddd-4444-4444-4444-444444444404",
+      "name": "Delivered",
+      "displayName": "تم التسليم بنجاح",
+      "color": "#10B981",
+      "icon": "check-circle",
+      "displayOrder": 4,
+      "isFinal": true
+    },
+    {
+      "id": "dddddddd-4444-4444-4444-444444444405",
+      "name": "Cancelled",
+      "displayName": "تم إلغاء الطلب",
+      "color": "#EF4444",
+      "icon": "x-circle",
+      "displayOrder": 5,
+      "isFinal": true
+    }
+  ],
+
+  "cancellationReasons_أسباب_الإلغاء_والرفض": [
+    {
+      "id": "eeeeeeee-5555-5555-5555-555555555501",
+      "reason": "نفاد الكمية المطلوبة من الصنف في المتجر",
+      "targetAudience": 2,
+      "isActive": true
+    },
+    {
+      "id": "eeeeeeee-5555-5555-5555-555555555502",
+      "reason": "ازدحام شديد في المتجر وصعوبة تلبية الطلب في الوقت المحدد",
+      "targetAudience": 2,
+      "isActive": true
+    },
+    {
+      "id": "eeeeeeee-5555-5555-5555-555555555503",
+      "reason": "تغيير رأي العميل أو الرغبة في إعادة الطلب بعناوين مختلفة",
+      "targetAudience": 1,
+      "isActive": true
+    },
+    {
+      "id": "eeeeeeee-5555-5555-5555-555555555504",
+      "reason": "تأخر غير متوقع في وصول المندوب",
+      "targetAudience": 3,
+      "isActive": true
+    }
+  ],
+
+  "paymentMethods_طرق_الدفع": [
+    {
+      "id": "ffffffff-6666-6666-6666-666666666601",
+      "name": "CashOnDelivery",
+      "displayName": "الدفع نقداً عند الاستلام (كاش)",
+      "iconUrl": "https://cdn.talabi.com/payments/cash.svg",
+      "isOnline": false,
+      "requiresReceipt": false,
+      "isActive": true
+    },
+    {
+      "id": "ffffffff-6666-6666-6666-666666666602",
+      "name": "KuraimiJawali",
+      "displayName": "محفظة جوالي / بنك الكريمي",
+      "iconUrl": "https://cdn.talabi.com/payments/kuraimi.svg",
+      "isOnline": true,
+      "requiresReceipt": true,
+      "isActive": true
+    },
+    {
+      "id": "ffffffff-6666-6666-6666-666666666603",
+      "name": "OneCash",
+      "displayName": "محفظة ون كاش (OneCash)",
+      "iconUrl": "https://cdn.talabi.com/payments/onecash.svg",
+      "isOnline": true,
+      "requiresReceipt": true,
+      "isActive": true
+    }
+  ],
+
+  "couriers_مناديب_التوصيل": [
+    {
+      "id": "12121212-1212-1212-1212-121212121201",
+      "userId": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "vehicleType": "دراجة نارية (موتور)",
+      "vehicleNumber": "صنعاء 12345 / 3",
+      "licenseNumber": "LIC-SN-98765",
+      "isAvailable": true,
+      "isOnline": true,
+      "currentLatitude": 15.328900,
+      "currentLongitude": 44.197800,
+      "lastLocationUpdate": "2026-09-11T20:50:00Z",
+      "rating": 4.90,
+      "totalDeliveries": 320,
+      "totalEarnings": 160000.00
+    }
+  ],
+
+  "orders_الطلبات": [
+    {
+      "id": "13131313-1313-1313-1313-131313131301",
+      "tenantId": "00000000-0000-0000-0000-000000000001",
+      "orderNumber": "ORD-2026-1001",
+      "customerId": "44444444-4444-4444-4444-444444444401",
+      "storeId": "22222222-2222-2222-2222-222222222201",
+      "deliveryAddressId": "55555555-5555-5555-5555-555555555501",
+      "deliveryAddressSnapshot": "{\"title\":\"المنزل\",\"city\":\"صنعاء\",\"district\":\"حدة\",\"street\":\"شارع عمان\",\"building\":\"عمارة النور\",\"floor\":\"3\",\"apartment\":\"6\",\"lat\":15.334567,\"lng\":44.198765}",
+      "subTotal": 10500.00,
+      "discountAmount": 500.00,
+      "deliveryFee": 700.00,
+      "taxAmount": 0.00,
+      "finalAmount": 10700.00,
+      "orderStatusId": "dddddddd-4444-4444-4444-444444444404",
+      "paymentStatus": 3,
+      "paymentMethodId": "ffffffff-6666-6666-6666-666666666602",
+      "courierId": "12121212-1212-1212-1212-121212121201",
+      "customerNotes": "يرجى تسليم الطلب عند البوابة الجنوبية والاتصال قبل الوصول",
+      "storeNotes": "تم التغليف الحراري بعناية فائقة",
+      "estimatedDeliveryTime": "2026-09-11T19:40:00Z",
+      "actualDeliveryTime": "2026-09-11T19:35:00Z",
+      "confirmedAt": "2026-09-11T19:35:10Z",
+      "cancelledAt": null
+    }
+  ],
+
+  "orderItems_عناصر_الطلب": [
+    {
+      "id": "14141414-1414-1414-1414-141414141401",
+      "orderId": "13131313-1313-1313-1313-131313131301",
+      "productId": "88888888-8888-8888-8888-888888888801",
+      "productName": "نصف حبة دجاج مندي مع الأرز البسمتي",
+      "productImageUrl": "https://cdn.talabi.com/products/chicken-mandi.webp",
+      "sku": "SHB-MND-001",
+      "unit": "صحن",
+      "quantity": 1,
+      "unitPrice": 3500.00,
+      "discount": 500.00,
+      "totalPrice": 3000.00,
+      "notes": "رز حبة طويلة مع المكسرات"
+    },
+    {
+      "id": "14141414-1414-1414-1414-141414141402",
+      "orderId": "13131313-1313-1313-1313-131313131301",
+      "productId": "88888888-8888-8888-8888-888888888802",
+      "productName": "نفر لحم برمة بلدي طازج",
+      "productImageUrl": "https://cdn.talabi.com/products/lamb-bormah.webp",
+      "sku": "SHB-BRM-002",
+      "unit": "صحن",
+      "quantity": 1,
+      "unitPrice": 7500.00,
+      "discount": 0.00,
+      "totalPrice": 7500.00,
+      "notes": "زيادة مرق حار"
+    }
+  ],
+
+  "orderStatusHistories_سجل_تتبع_حالات_الطلب": [
+    {
+      "id": "15151515-1515-1515-1515-151515151501",
+      "orderId": "13131313-1313-1313-1313-131313131301",
+      "fromStatusId": null,
+      "toStatusId": "dddddddd-4444-4444-4444-444444444401",
+      "changedByUserId": "cccccccc-cccc-cccc-cccc-cccccccccccc",
+      "changedByRole": "Customer",
+      "notes": "تم إنشاء الطلب بنجاح واختيار الدفع عبر محفظة جوالي",
+      "creationTime": "2026-09-11T19:00:00Z"
+    },
+    {
+      "id": "15151515-1515-1515-1515-151515151502",
+      "orderId": "13131313-1313-1313-1313-131313131301",
+      "fromStatusId": "dddddddd-4444-4444-4444-444444444401",
+      "toStatusId": "dddddddd-4444-4444-4444-444444444402",
+      "changedByUserId": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbb01",
+      "changedByRole": "StoreManager",
+      "notes": "تم قبول الطلب وبدء الطهي والتجهيز",
+      "creationTime": "2026-09-11T19:05:00Z"
+    },
+    {
+      "id": "15151515-1515-1515-1515-151515151503",
+      "orderId": "13131313-1313-1313-1313-131313131301",
+      "fromStatusId": "dddddddd-4444-4444-4444-444444444402",
+      "toStatusId": "dddddddd-4444-4444-4444-444444444403",
+      "changedByUserId": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "changedByRole": "Courier",
+      "notes": "تم استلام الطلب من المطعم والمندوب متوجه إلى العميل",
+      "creationTime": "2026-09-11T19:22:00Z"
+    },
+    {
+      "id": "15151515-1515-1515-1515-151515151504",
+      "orderId": "13131313-1313-1313-1313-131313131301",
+      "fromStatusId": "dddddddd-4444-4444-4444-444444444403",
+      "toStatusId": "dddddddd-4444-4444-4444-444444444404",
+      "changedByUserId": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "changedByRole": "Courier",
+      "notes": "تم تسليم الوجبات للعميل والتحقق برمز التسليم",
+      "creationTime": "2026-09-11T19:35:10Z"
+    }
+  ],
+
+  "orderRejections_سجلات_رفض_الطلبات": [],
+  "orderCancellations_سجلات_إلغاء_الطلبات": [],
+
+  "payments_المدفوعات": [
+    {
+      "id": "16161616-1616-1616-1616-161616161601",
+      "tenantId": "00000000-0000-0000-0000-000000000001",
+      "orderId": "13131313-1313-1313-1313-131313131301",
+      "paymentMethodId": "ffffffff-6666-6666-6666-666666666602",
+      "amount": 10700.00,
+      "currency": "YER",
+      "status": 2,
+      "transactionReference": "KRM-TX-99881122",
+      "paidAt": "2026-09-11T19:04:00Z",
+      "refundedAt": null,
+      "refundAmount": null
+    }
+  ],
+
+  "paymentReceipts_إيصالات_الدفع": [
+    {
+      "id": "17171717-1717-1717-1717-171717171701",
+      "paymentId": "16161616-1616-1616-1616-161616161601",
+      "mediaFileId": "18181818-1818-1818-1818-181818181801",
+      "walletName": "محفظة جوالي",
+      "transactionNumber": "TRX-774411009",
+      "amount": 10700.00,
+      "verificationStatus": 2,
+      "verifiedByUserId": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbb01",
+      "verifiedAt": "2026-09-11T19:04:45Z",
+      "rejectionReason": null,
+      "uploadedAt": "2026-09-11T19:02:15Z"
+    }
+  ],
+
+  "mediaFiles_ملفات_الوسائط": [
+    {
+      "id": "18181818-1818-1818-1818-181818181801",
+      "tenantId": "00000000-0000-0000-0000-000000000001",
+      "fileName": "receipt_order_1001.webp",
+      "originalFileName": "jawali_receipt_screenshot.png",
+      "contentType": "image/webp",
+      "fileSize": 284500,
+      "extension": ".webp",
+      "storageProvider": "LocalFileSystem",
+      "bucketName": "receipts",
+      "objectKey": "2026/09/receipt_order_1001.webp",
+      "publicUrl": "https://cdn.talabi.com/receipts/2026/09/receipt_order_1001.webp",
+      "thumbnailUrl": "https://cdn.talabi.com/receipts/thumbs/receipt_order_1001.webp",
+      "mediumUrl": null,
+      "optimizedUrl": "https://cdn.talabi.com/receipts/opt/receipt_order_1001.webp",
+      "width": 1080,
+      "height": 1920,
+      "entityType": "PaymentReceipt",
+      "entityId": "17171717-1717-1717-1717-171717171701",
+      "isPublic": false,
+      "accessLevel": 2,
+      "status": 2,
+      "uploadedAt": "2026-09-11T19:02:15Z"
+    }
+  ],
+
+  "deliveryAssignments_تعيينات_التوصيل": [
+    {
+      "id": "19191919-1919-1919-1919-191919191901",
+      "orderId": "13131313-1313-1313-1313-131313131301",
+      "courierId": "12121212-1212-1212-1212-121212121201",
+      "status": 5,
+      "assignedByUserId": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbb01",
+      "assignedAt": "2026-09-11T19:06:00Z",
+      "acceptedAt": "2026-09-11T19:07:30Z",
+      "pickupAt": "2026-09-11T19:21:40Z",
+      "deliveredAt": "2026-09-11T19:35:10Z",
+      "estimatedArrival": "2026-09-11T19:40:00Z",
+      "distanceKm": 3.80,
+      "deliveryFee": 700.00,
+      "courierEarning": 550.00
+    }
+  ],
+
+  "deliveryConfirmations_إثباتات_وتأكيدات_التسليم": [
+    {
+      "id": "20202020-2020-2020-2020-202020202001",
+      "deliveryAssignmentId": "19191919-1919-1919-1919-191919191901",
+      "confirmedBy": 1,
+      "confirmedByUserId": "cccccccc-cccc-cccc-cccc-cccccccccccc",
+      "verificationCode": "849201",
+      "signatureUrl": null,
+      "photoProofUrl": "https://cdn.talabi.com/proofs/delivery_1001.webp",
+      "notes": "تم الاستلام بحالة ممتازة وبشكل حار وطازج",
+      "confirmedAt": "2026-09-11T19:35:10Z"
+    }
+  ],
+
+  "notificationTypes_أنواع_الإشعارات": [
+    {
+      "id": "21212121-2121-2121-2121-212121212101",
+      "name": "OrderStatusChanged",
+      "displayName": "تحديث حالة الطلب",
+      "template": "طلبك رقم {OrderNumber} أصبح الآن بحالة: {StatusName}",
+      "icon": "bell",
+      "color": "#3B82F6",
+      "isActive": true
+    },
+    {
+      "id": "21212121-2121-2121-2121-212121212102",
+      "name": "DeliveryAssignment",
+      "displayName": "إسناد مهمة توصيل",
+      "template": "تم إسناد الطلب رقم {OrderNumber} إليك للتوصيل",
+      "icon": "navigation",
+      "color": "#10B981",
+      "isActive": true
+    }
+  ],
+
+  "appNotifications_إشعارات_المستخدمين": [
+    {
+      "id": "22222222-3333-4444-5555-666666666601",
+      "recipientUserId": "cccccccc-cccc-cccc-cccc-cccccccccccc",
+      "notificationTypeId": "21212121-2121-2121-2121-212121212101",
+      "title": "طلبك في الطريق إليك! 🛵",
+      "message": "طلبك رقم ORD-2026-1001 خرج الآن مع الكابتن أحمد منصور وفي الطريق إلى منزلك.",
+      "relatedEntityName": "Order",
+      "relatedEntityId": "13131313-1313-1313-1313-131313131301",
+      "actionUrl": "/orders/13131313-1313-1313-1313-131313131301",
+      "isRead": true,
+      "readAt": "2026-09-11T19:25:00Z",
+      "sentVia": "PushNotification",
+      "creationTime": "2026-09-11T19:22:00Z"
+    }
+  ],
+
+  "reviews_التقييمات_والمراجعات": [
+    {
+      "id": "23232323-2323-2323-2323-232323232301",
+      "tenantId": "00000000-0000-0000-0000-000000000001",
+      "orderId": "13131313-1313-1313-1313-131313131301",
+      "customerId": "44444444-4444-4444-4444-444444444401",
+      "storeId": "22222222-2222-2222-2222-222222222201",
+      "courierId": "12121212-1212-1212-1212-121212121201",
+      "storeRating": 5,
+      "courierRating": 5,
+      "productQualityRating": 5,
+      "deliverySpeedRating": 5,
+      "comment": "تجربة رائعة جداً! الأكل وصل ساخن ولذيذ واللحم طري جداً، والمندوب خلوق وسريع. شكراً لكم.",
+      "storeReply": "أهلاً بك يا فندم، نسعد دائماً بخدمتك ونتمنى لك دوام الصحة والعافية!",
+      "storeRepliedAt": "2026-09-11T20:00:00Z",
+      "isVisible": true
+    }
+  ],
+
+  "favorites_المفضلة": [
+    {
+      "id": "24242424-2424-2424-2424-242424242401",
+      "customerId": "44444444-4444-4444-4444-444444444401",
+      "entityType": "Product",
+      "entityId": "88888888-8888-8888-8888-888888888801",
+      "creationTime": "2026-09-10T14:30:00Z"
+    },
+    {
+      "id": "24242424-2424-2424-2424-242424242402",
+      "customerId": "44444444-4444-4444-4444-444444444401",
+      "entityType": "Store",
+      "entityId": "22222222-2222-2222-2222-222222222201",
+      "creationTime": "2026-09-10T14:35:00Z"
+    }
+  ]
+}

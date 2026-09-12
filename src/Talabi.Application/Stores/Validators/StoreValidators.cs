@@ -159,11 +159,32 @@ public class UpdateStoreDtoValidator : AbstractValidator<UpdateStoreDto>
 
 #region Store Type & Store User Validators
 /// <summary>
-/// محدد قواعد التحقق لإنشاء وتعديل أنواع المتاجر
+/// محدد قواعد التحقق لإنشاء أنواع المتاجر
 /// </summary>
-public class CreateUpdateStoreTypeDtoValidator : AbstractValidator<CreateUpdateStoreTypeDto>
+public class CreateStoreTypeDtoValidator : AbstractValidator<CreateStoreTypeDto>
 {
-    public CreateUpdateStoreTypeDtoValidator()
+    public CreateStoreTypeDtoValidator()
+    {
+        #region Rules
+        RuleFor(x => x.Name)
+            .NotEmpty()
+            .WithMessage("اسم نوع المتجر إلزامي.")
+            .MaximumLength(StoreTypeConsts.MaxNameLength)
+            .WithMessage($"اسم نوع المتجر لا يتجاوز {StoreTypeConsts.MaxNameLength} حرفاً.");
+
+        RuleFor(x => x.DisplayOrder)
+            .GreaterThanOrEqualTo(0)
+            .WithMessage("ترتيب العرض يجب أن يكون صفراً أو رقماً موجباً.");
+        #endregion
+    }
+}
+
+/// <summary>
+/// محدد قواعد التحقق لتعديل أنواع المتاجر
+/// </summary>
+public class UpdateStoreTypeDtoValidator : AbstractValidator<UpdateStoreTypeDto>
+{
+    public UpdateStoreTypeDtoValidator()
     {
         #region Rules
         RuleFor(x => x.Name)

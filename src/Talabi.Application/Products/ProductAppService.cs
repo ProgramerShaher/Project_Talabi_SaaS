@@ -107,7 +107,7 @@ public class ProductAppService : ApplicationService, IProductAppService
         // يعاد حساب السعر النهائي بعد تطبيق القيم من الـ Mapper في حال وجود خصم
         product.CalculateFinalPrice();
 
-        await _productRepository.InsertAsync(product);
+        await _productRepository.InsertAsync(product, autoSave: true);
         return await GetAsync(product.Id);
     }
 

@@ -7,6 +7,7 @@ using Volo.Abp.PermissionManagement;
 using Volo.Abp.SettingManagement;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.FluentValidation;
+using Volo.Abp.BlobStoring;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Talabi;
@@ -20,7 +21,8 @@ namespace Talabi;
     typeof(AbpPermissionManagementApplicationModule),
     typeof(AbpTenantManagementApplicationModule),
     typeof(AbpFeatureManagementApplicationModule),
-    typeof(AbpSettingManagementApplicationModule)
+    typeof(AbpSettingManagementApplicationModule),
+    typeof(AbpBlobStoringModule)
     )]
 public class TalabiApplicationModule : AbpModule
 {
