@@ -23,9 +23,9 @@ public class Product : FullAuditedAggregateRoot<Guid>, IMultiTenant
     public virtual Guid StoreId { get; set; }
 
     /// <summary>
-    /// معرف تصنيف المتجر الذي ينتمي له المنتج
+    /// معرف تصنيف المتجر الذي ينتمي له المنتج (يقبل أي مستوى: رئيسي أو فرعي - اختياري)
     /// </summary>
-    public virtual Guid StoreCategoryId { get; set; }
+    public virtual Guid? StoreCategoryId { get; set; }
 
     /// <summary>
     /// اسم المنتج
@@ -164,11 +164,11 @@ public class Product : FullAuditedAggregateRoot<Guid>, IMultiTenant
     public Product(
         Guid id,
         Guid storeId,
-        Guid storeCategoryId,
         string name,
         string sku,
         decimal price,
         string unit,
+        Guid? storeCategoryId = null,
         decimal discount = 0,
         DiscountType discountType = DiscountType.Fixed,
         Guid? tenantId = null)

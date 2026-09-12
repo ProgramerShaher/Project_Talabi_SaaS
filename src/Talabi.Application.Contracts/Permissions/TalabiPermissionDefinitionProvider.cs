@@ -31,6 +31,14 @@ public class TalabiPermissionDefinitionProvider : PermissionDefinitionProvider
         storeCategoriesPermission.AddChild(TalabiPermissions.StoreCategories.Edit,   L("Permission:StoreCategories.Edit"));
         storeCategoriesPermission.AddChild(TalabiPermissions.StoreCategories.Delete, L("Permission:StoreCategories.Delete"));
         storeCategoriesPermission.AddChild(TalabiPermissions.StoreCategories.Import, L("Permission:StoreCategories.Import"));
+
+        // ── المنتجات ──
+        var productsPermission = myGroup.AddPermission(
+            TalabiPermissions.Products.Default, L("Permission:Products"));
+        productsPermission.AddChild(TalabiPermissions.Products.Create, L("Permission:Products.Create"));
+        productsPermission.AddChild(TalabiPermissions.Products.Edit,   L("Permission:Products.Edit"));
+        productsPermission.AddChild(TalabiPermissions.Products.Delete, L("Permission:Products.Delete"));
+        productsPermission.AddChild(TalabiPermissions.Products.Import, L("Permission:Products.Import"));
     }
 
     private static LocalizableString L(string name)

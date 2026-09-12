@@ -83,10 +83,12 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             .HasForeignKey(x => x.StoreId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        // التصنيف اختياري - يقبل أي مستوى (رئيسي أو فرعي)
         builder.HasOne(x => x.StoreCategory)
             .WithMany()
             .HasForeignKey(x => x.StoreCategoryId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.SetNull);
 
         builder.HasMany(x => x.Images)
             .WithOne(x => x.Product)

@@ -13,7 +13,7 @@ public class ProductDto : FullAuditedEntityDto<Guid>
     #region Properties
     public Guid? TenantId { get; set; }
     public Guid StoreId { get; set; }
-    public Guid StoreCategoryId { get; set; }
+    public Guid? StoreCategoryId { get; set; }
     public string StoreCategoryName { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
     public string? Description { get; set; }
@@ -51,8 +51,7 @@ public class CreateProductDto
     [Required(ErrorMessage = "معرف المتجر مطلوب")]
     public Guid StoreId { get; set; }
 
-    [Required(ErrorMessage = "معرف تصنيف المتجر مطلوب")]
-    public Guid StoreCategoryId { get; set; }
+    public Guid? StoreCategoryId { get; set; }
 
     [Required(ErrorMessage = "اسم المنتج مطلوب")]
     [StringLength(ProductConsts.MaxNameLength, ErrorMessage = "تجاوزت الحد الأقصى لاسم المنتج")]
@@ -116,8 +115,7 @@ public class CreateProductDto
 public class UpdateProductDto
 {
     #region Properties
-    [Required(ErrorMessage = "معرف تصنيف المتجر مطلوب")]
-    public Guid StoreCategoryId { get; set; }
+    public Guid? StoreCategoryId { get; set; }
 
     [Required(ErrorMessage = "اسم المنتج مطلوب")]
     [StringLength(ProductConsts.MaxNameLength)]

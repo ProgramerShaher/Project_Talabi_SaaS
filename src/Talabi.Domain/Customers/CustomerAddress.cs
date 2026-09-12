@@ -29,6 +29,21 @@ public class CustomerAddress : FullAuditedEntity<Guid>
     public virtual decimal Longitude { get; set; }
 
     /// <summary>
+    /// الدولة
+    /// </summary>
+    public virtual string Country { get; set; } = string.Empty;
+
+    /// <summary>
+    /// المحافظة
+    /// </summary>
+    public virtual string Governorate { get; set; } = string.Empty;
+
+    /// <summary>
+    /// المنطقة
+    /// </summary>
+    public virtual string Region { get; set; } = string.Empty;
+
+    /// <summary>
     /// اسم المدينة
     /// </summary>
     public virtual string City { get; set; } = string.Empty;
@@ -83,6 +98,9 @@ public class CustomerAddress : FullAuditedEntity<Guid>
         string title,
         decimal latitude,
         decimal longitude,
+        string country,
+        string governorate,
+        string region,
         string city,
         string district,
         string street,
@@ -93,6 +111,9 @@ public class CustomerAddress : FullAuditedEntity<Guid>
         Title = title;
         Latitude = latitude;
         Longitude = longitude;
+        Country = country;
+        Governorate = governorate;
+        Region = region;
         City = city;
         District = district;
         Street = street;
