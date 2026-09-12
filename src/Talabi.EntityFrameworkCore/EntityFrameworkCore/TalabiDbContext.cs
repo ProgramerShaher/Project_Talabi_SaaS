@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.Data;
@@ -53,6 +53,60 @@ public class TalabiDbContext :
 
     #endregion
 
+    #region Talabi Core SaaS Entities
+
+    // 1. Customers
+    public DbSet<Talabi.Customers.Customer> Customers { get; set; }
+    public DbSet<Talabi.Customers.CustomerAddress> CustomerAddresses { get; set; }
+
+    // 2. Stores
+    public DbSet<Talabi.Stores.StoreType> StoreTypes { get; set; }
+    public DbSet<Talabi.Stores.Store> Stores { get; set; }
+    public DbSet<Talabi.Stores.StoreUser> StoreUsers { get; set; }
+
+    // 3. Categories
+    public DbSet<Talabi.Categories.Category> Categories { get; set; }
+    public DbSet<Talabi.Categories.StoreCategory> StoreCategories { get; set; }
+
+    // 4. Products & Inventory
+    public DbSet<Talabi.Products.Product> Products { get; set; }
+    public DbSet<Talabi.Products.ProductImage> ProductImages { get; set; }
+    // public DbSet<Talabi.Products.Inventory> Inventories { get; set; }
+
+    // 5. Carts
+    public DbSet<Talabi.Carts.Cart> Carts { get; set; }
+    public DbSet<Talabi.Carts.CartItem> CartItems { get; set; }
+
+    // 6. Orders
+    public DbSet<Talabi.Orders.OrderStatus> OrderStatuses { get; set; }
+    public DbSet<Talabi.Orders.Order> Orders { get; set; }
+    public DbSet<Talabi.Orders.OrderItem> OrderItems { get; set; }
+    public DbSet<Talabi.Orders.OrderStatusHistory> OrderStatusHistories { get; set; }
+    public DbSet<Talabi.Orders.CancellationReason> CancellationReasons { get; set; }
+    public DbSet<Talabi.Orders.OrderRejection> OrderRejections { get; set; }
+    public DbSet<Talabi.Orders.OrderCancellation> OrderCancellations { get; set; }
+
+    // 7. Payments
+    public DbSet<Talabi.Payments.PaymentMethod> PaymentMethods { get; set; }
+    public DbSet<Talabi.Payments.Payment> Payments { get; set; }
+    public DbSet<Talabi.Payments.PaymentReceipt> PaymentReceipts { get; set; }
+
+    // 8. Deliveries
+    public DbSet<Talabi.Deliveries.Courier> Couriers { get; set; }
+    public DbSet<Talabi.Deliveries.DeliveryAssignment> DeliveryAssignments { get; set; }
+    public DbSet<Talabi.Deliveries.DeliveryConfirmation> DeliveryConfirmations { get; set; }
+
+    // 9. Notifications & Media
+    public DbSet<Talabi.Notifications.NotificationType> NotificationTypes { get; set; }
+    public DbSet<Talabi.Notifications.AppNotification> Notifications { get; set; }
+    public DbSet<Talabi.MediaFiles.MediaFile> MediaFiles { get; set; }
+
+    // 10. Reviews & Favorites
+    public DbSet<Talabi.Interactions.Review> Reviews { get; set; }
+    public DbSet<Talabi.Interactions.Favorite> Favorites { get; set; }
+
+    #endregion
+
     public TalabiDbContext(DbContextOptions<TalabiDbContext> options)
         : base(options)
     {
@@ -74,13 +128,7 @@ public class TalabiDbContext :
         builder.ConfigureFeatureManagement();
         builder.ConfigureTenantManagement();
 
-        /* Configure your own tables/entities inside here */
-
-        //builder.Entity<YourEntity>(b =>
-        //{
-        //    b.ToTable(TalabiConsts.DbTablePrefix + "YourEntities", TalabiConsts.DbSchema);
-        //    b.ConfigureByConvention(); //auto configure for the base class props
-        //    //...
-        //});
+        /* تطبيق جميع ملفات IEntityTypeConfiguration المعرفة في طبقة EntityFrameworkCore تلقائياً */
+        builder.ApplyConfigurationsFromAssembly(typeof(TalabiEntityFrameworkCoreModule).Assembly);
     }
 }
