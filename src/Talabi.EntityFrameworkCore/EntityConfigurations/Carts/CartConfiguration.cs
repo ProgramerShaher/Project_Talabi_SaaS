@@ -18,12 +18,15 @@ public class CartConfiguration : IEntityTypeConfiguration<Cart>
 
         builder.Property(x => x.IsActive).HasDefaultValue(true);
         builder.Property(x => x.LastActivityAt).IsRequired();
+        builder.Property(x => x.SubTotal).HasPrecision(18, 2).HasDefaultValue(0m);
+        builder.Property(x => x.TotalDiscount).HasPrecision(18, 2).HasDefaultValue(0m);
+        builder.Property(x => x.FinalTotal).HasPrecision(18, 2).HasDefaultValue(0m);
 
         // فهرس فريد جزئي للسلة النشطة لنفس العميل مع نفس المتجر
-        builder.HasIndex(x => new { x.CustomerId, x.StoreId, x.IsActive })
+        builder.HasIndex(x => new { x.CustomerId, x.IsActive })
             .HasFilter("[IsActive] = 1")
             .IsUnique()
-            .HasDatabaseName("IX_Carts_CustomerId_StoreId_IsActive");
+            .HasDatabaseName("IX_Carts_CustomerId_IsActive");
 
         builder.HasOne(x => x.Customer)
             .WithMany()
@@ -57,8 +60,13 @@ public class CartItemConfiguration : IEntityTypeConfiguration<CartItem>
         });
 
         builder.Property(x => x.UnitPriceAtAddition).HasPrecision(18, 2).IsRequired();
+        builder.Property(x => x.TotalPrice).HasPrecision(18, 2).IsRequired();
         builder.Property(x => x.Notes).HasMaxLength(CartConsts.MaxNotesLength);
         builder.Property(x => x.AddedAt).IsRequired();
+
+        builder.HasIndex(x => new { x.CartId, x.ProductId })
+            .IsUnique()
+            .HasDatabaseName("IX_CartItems_CartId_ProductId");
 
         builder.HasOne(x => x.Product)
             .WithMany()

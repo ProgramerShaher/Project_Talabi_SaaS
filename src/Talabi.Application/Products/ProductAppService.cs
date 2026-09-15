@@ -16,7 +16,7 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Talabi.Products;
 
-[Authorize(TalabiPermissions.Products.Default)]
+[Authorize]
 public class ProductAppService : ApplicationService, IProductAppService
 {
     private readonly IRepository<Product, Guid> _productRepository;

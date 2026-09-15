@@ -54,11 +54,15 @@ public class CancellationReasonDto : FullAuditedEntityDto<Guid>
 public class RejectOrderInput
 {
     #region Properties
-    [Required(ErrorMessage = "معرف الطلب مطلوب")]
-    public Guid OrderId { get; set; }
+    /// <summary>
+    /// معرف الطلب (اختياري إن كان في مسار الـ URL)
+    /// </summary>
+    public Guid? OrderId { get; set; }
 
-    [Required(ErrorMessage = "معرف سبب الرفض مطلوب")]
-    public Guid RejectionReasonId { get; set; }
+    /// <summary>
+    /// معرف سبب الرفض (اختياري - يتم استخدام السبب الافتراضي إن تُرك فارغاً)
+    /// </summary>
+    public Guid? RejectionReasonId { get; set; }
 
     [StringLength(CancellationReasonConsts.MaxAdditionalNotesLength)]
     public string? AdditionalNotes { get; set; }
@@ -71,11 +75,15 @@ public class RejectOrderInput
 public class CancelOrderInput
 {
     #region Properties
-    [Required(ErrorMessage = "معرف الطلب مطلوب")]
-    public Guid OrderId { get; set; }
+    /// <summary>
+    /// معرف الطلب (اختياري إن كان في مسار الـ URL)
+    /// </summary>
+    public Guid? OrderId { get; set; }
 
-    [Required(ErrorMessage = "معرف سبب الإلغاء مطلوب")]
-    public Guid CancellationReasonId { get; set; }
+    /// <summary>
+    /// معرف سبب الإلغاء (اختياري - يتم استخدام السبب الافتراضي إن تُرك فارغاً)
+    /// </summary>
+    public Guid? CancellationReasonId { get; set; }
 
     [StringLength(CancellationReasonConsts.MaxAdditionalNotesLength)]
     public string? AdditionalNotes { get; set; }

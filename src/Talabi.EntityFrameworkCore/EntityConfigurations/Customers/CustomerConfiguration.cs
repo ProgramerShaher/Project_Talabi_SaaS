@@ -24,6 +24,9 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
             .HasMaxLength(CustomerConsts.MaxPreferredLanguageLength)
             .HasDefaultValue(CustomerConsts.DefaultPreferredLanguage);
 
+        builder.Property(x => x.AvatarUrl)
+            .HasMaxLength(CustomerConsts.MaxAvatarUrlLength);
+
         builder.Property(x => x.LoyaltyPoints)
             .HasDefaultValue(0);
 

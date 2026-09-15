@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Talabi.Customers;
 using Talabi.Notifications.Dtos;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
@@ -12,28 +13,39 @@ using Volo.Abp.Users;
 
 namespace Talabi.Notifications;
 
+/// <summary>
+/// خدمة إدارة واسترجاع إشعارات المستخدم
+/// </summary>
 [Authorize]
 public class NotificationAppService : ApplicationService, INotificationAppService
 {
     private readonly IRepository<AppNotification, Guid> _notificationRepository;
     private readonly IRepository<NotificationType, Guid> _notificationTypeRepository;
+    private readonly IRepository<Customer, Guid> _customerRepository;
 
     public NotificationAppService(
         IRepository<AppNotification, Guid> notificationRepository,
-        IRepository<NotificationType, Guid> notificationTypeRepository)
+        IRepository<NotificationType, Guid> notificationTypeRepository,
+        IRepository<Customer, Guid> customerRepository)
     {
         _notificationRepository = notificationRepository;
         _notificationTypeRepository = notificationTypeRepository;
+        _customerRepository = customerRepository;
     }
 
+    /// <summary>
+    /// جلب قائمة إشعارات المستخدم الحالي مع الفلترة والتقسيم
+    /// </summary>
     public async Task<PagedResultDto<AppNotificationDto>> GetListAsync(GetNotificationListInput input)
     {
         var userId = CurrentUser.GetId();
+        var customer = await _customerRepository.FirstOrDefaultAsync(c => c.UserId == userId);
+        var customerId = customer?.Id;
 
-        // جلب الإشعارات الخاصة بالمستخدم الحالي فقط
+        // جلب الإشعارات الخاصة بالمستخدم الحالي أو عميله المرتبط
         var query = await _notificationRepository.GetQueryableAsync();
         
-        query = query.Where(x => x.RecipientUserId == userId);
+        query = query.Where(x => x.RecipientUserId == userId || (customerId != null && x.RecipientUserId == customerId));
 
         if (input.IsRead.HasValue)
         {
@@ -79,20 +91,32 @@ public class NotificationAppService : ApplicationService, INotificationAppServic
         return new PagedResultDto<AppNotificationDto>(totalCount, dtos);
     }
 
+    /// <summary>
+    /// جلب عدد الإشعارات غير المقروءة للمستخدم الحالي
+    /// </summary>
     public async Task<int> GetUnreadCountAsync()
     {
         var userId = CurrentUser.GetId();
+        var customer = await _customerRepository.FirstOrDefaultAsync(c => c.UserId == userId);
+        var customerId = customer?.Id;
+
         var query = await _notificationRepository.GetQueryableAsync();
-        return await AsyncExecuter.CountAsync(query.Where(x => x.RecipientUserId == userId && !x.IsRead));
+        return await AsyncExecuter.CountAsync(query.Where(x => (x.RecipientUserId == userId || (customerId != null && x.RecipientUserId == customerId)) && !x.IsRead));
     }
 
+    /// <summary>
+    /// تعليم إشعار محدد كمقروء
+    /// </summary>
     public async Task MarkAsReadAsync(Guid id)
     {
         var userId = CurrentUser.GetId();
+        var customer = await _customerRepository.FirstOrDefaultAsync(c => c.UserId == userId);
+        var customerId = customer?.Id;
+
         var notification = await _notificationRepository.GetAsync(id);
 
-        // تأكد أن الإشعار يخص المستخدم
-        if (notification.RecipientUserId != userId)
+        // تأكد أن الإشعار يخص المستخدم أو عميله
+        if (notification.RecipientUserId != userId && (customerId == null || notification.RecipientUserId != customerId))
         {
             throw new UserFriendlyException("غير مصرح لك بتعديل هذا الإشعار");
         }
@@ -105,10 +129,17 @@ public class NotificationAppService : ApplicationService, INotificationAppServic
         }
     }
 
+    /// <summary>
+    /// تعليم كافة الإشعارات كمقروءة
+    /// </summary>
     public async Task MarkAllAsReadAsync()
     {
         var userId = CurrentUser.GetId();
-        var unreadNotifications = await _notificationRepository.GetListAsync(x => x.RecipientUserId == userId && !x.IsRead);
+        var customer = await _customerRepository.FirstOrDefaultAsync(c => c.UserId == userId);
+        var customerId = customer?.Id;
+
+        var unreadNotifications = await _notificationRepository.GetListAsync(x => 
+            (x.RecipientUserId == userId || (customerId != null && x.RecipientUserId == customerId)) && !x.IsRead);
 
         var now = DateTime.UtcNow;
         foreach (var notification in unreadNotifications)

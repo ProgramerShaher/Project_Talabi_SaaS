@@ -29,6 +29,9 @@ public class NotificationTypeDataSeederContributor : IDataSeedContributor, ITran
         await SeedNotificationTypeAsync("OrderAssignedToDriver", "تكليف بطلب جديد", "fas fa-motorcycle", "#f39c12");
         await SeedNotificationTypeAsync("SystemAnnouncement", "إعلان إداري", "fas fa-bullhorn", "#e74c3c");
         await SeedNotificationTypeAsync("OrderDelivered", "تم التوصيل", "fas fa-check-circle", "#2ecc71");
+        await SeedNotificationTypeAsync("OrderAccepted", "تم قبول الطلب", "fas fa-check-circle", "#27ae60");
+        await SeedNotificationTypeAsync("OrderRejected", "تم رفض الطلب", "fas fa-times-circle", "#c0392b");
+        await SeedNotificationTypeAsync("OrderCancelled", "تم إلغاء الطلب", "fas fa-ban", "#7f8c8d");
     }
 
     private async Task SeedNotificationTypeAsync(string name, string displayName, string icon, string color)

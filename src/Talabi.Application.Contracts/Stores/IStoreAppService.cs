@@ -20,4 +20,10 @@ public interface IStoreAppService : IApplicationService
     Task<StoreDto> UpdateAsync(Guid id, UpdateStoreDto input);
 
     Task DeleteAsync(Guid id);
+
+    Task<System.Collections.Generic.List<StorePaymentAccountDto>> GetPaymentAccountsAsync(Guid storeId);
+
+    Task<StorePaymentAccountDto> AddPaymentAccountAsync(CreateStorePaymentAccountDto input);
+
+    Task DeletePaymentAccountAsync(Guid storeId, Guid accountId);
 }

@@ -60,6 +60,7 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.Property(x => x.FinalAmount).HasPrecision(18, 2).HasDefaultValue(0);
 
         builder.Property(x => x.PaymentStatus).HasDefaultValue(OrderPaymentStatus.Pending);
+        builder.Property(x => x.PaymentReceiptUrl).HasMaxLength(2048);
 
         // الفهارس المطلوبة
         builder.HasIndex(x => x.OrderNumber).IsUnique().HasDatabaseName("IX_Orders_OrderNumber");

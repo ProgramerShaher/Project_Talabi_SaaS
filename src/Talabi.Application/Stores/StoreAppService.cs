@@ -15,15 +15,19 @@ namespace Talabi.Stores;
 /// <summary>
 /// خدمة إدارة المتاجر
 /// </summary>
-[Authorize(TalabiPermissions.Stores.Default)]
+[Authorize]
 public class StoreAppService : ApplicationService, IStoreAppService
 {
     private readonly IRepository<Store, Guid> _storeRepository;
+    private readonly IRepository<StorePaymentAccount, Guid> _paymentAccountRepository;
     private readonly StoreMapper _mapper;
 
-    public StoreAppService(IRepository<Store, Guid> storeRepository)
+    public StoreAppService(
+        IRepository<Store, Guid> storeRepository,
+        IRepository<StorePaymentAccount, Guid> paymentAccountRepository)
     {
         _storeRepository = storeRepository;
+        _paymentAccountRepository = paymentAccountRepository;
         _mapper = new StoreMapper();
     }
 
@@ -104,5 +108,60 @@ public class StoreAppService : ApplicationService, IStoreAppService
     public async Task DeleteAsync(Guid id)
     {
         await _storeRepository.DeleteAsync(id);
+    }
+
+    public async Task<List<StorePaymentAccountDto>> GetPaymentAccountsAsync(Guid storeId)
+    {
+        var accounts = await _paymentAccountRepository.GetListAsync(x => x.StoreId == storeId);
+        
+        return accounts.Select(a => new StorePaymentAccountDto
+        {
+            Id = a.Id,
+            StoreId = a.StoreId,
+            ProviderName = a.ProviderName,
+            AccountNumber = a.AccountNumber,
+            AccountName = a.AccountName,
+            IsActive = a.IsActive,
+            Notes = a.Notes
+        }).ToList();
+    }
+
+    [Authorize(TalabiPermissions.Stores.Edit)]
+    public async Task<StorePaymentAccountDto> AddPaymentAccountAsync(CreateStorePaymentAccountDto input)
+    {
+        var account = new StorePaymentAccount(
+            GuidGenerator.Create(),
+            input.StoreId,
+            input.ProviderName,
+            input.AccountNumber,
+            input.AccountName,
+            input.IsActive,
+            input.Notes
+        );
+
+        await _paymentAccountRepository.InsertAsync(account);
+
+        return new StorePaymentAccountDto
+        {
+            Id = account.Id,
+            StoreId = account.StoreId,
+            ProviderName = account.ProviderName,
+            AccountNumber = account.AccountNumber,
+            AccountName = account.AccountName,
+            IsActive = account.IsActive,
+            Notes = account.Notes
+        };
+    }
+
+    [Authorize(TalabiPermissions.Stores.Edit)]
+    public async Task DeletePaymentAccountAsync(Guid storeId, Guid accountId)
+    {
+        var account = await _paymentAccountRepository.GetAsync(accountId);
+        if (account.StoreId != storeId)
+        {
+            throw new UserFriendlyException("هذا الحساب لا يتبع لهذا المتجر");
+        }
+
+        await _paymentAccountRepository.DeleteAsync(accountId);
     }
 }

@@ -50,4 +50,49 @@ public class UpdateCartItemQuantityInputValidator : AbstractValidator<UpdateCart
         #endregion
     }
 }
+
+/// <summary>
+/// محدد قواعد التحقق لإضافة عنصر إلى سلة مشتريات العميل الحالي
+/// </summary>
+public class AddShoppingCartItemInputValidator : AbstractValidator<AddShoppingCartItemInput>
+{
+    public AddShoppingCartItemInputValidator()
+    {
+        #region Rules
+
+        RuleFor(x => x.ProductId)
+            .NotEmpty()
+            .WithMessage("معرف المنتج إلزامي لإضافته إلى السلة.");
+
+        RuleFor(x => x.Quantity)
+            .InclusiveBetween(1, 1000)
+            .WithMessage("الكمية المضافة إلى السلة يجب أن تكون بين 1 و 1000 قطعة.");
+
+        When(x => !string.IsNullOrEmpty(x.Notes), () =>
+        {
+            RuleFor(x => x.Notes)
+                .MaximumLength(CartConsts.MaxNotesLength)
+                .WithMessage($"ملاحظات المنتج في السلة لا يمكن أن تتجاوز {CartConsts.MaxNotesLength} حرفاً.");
+        });
+
+        #endregion
+    }
+}
+
+/// <summary>
+/// محدد قواعد التحقق لتعديل كمية عنصر في سلة مشتريات العميل الحالي
+/// </summary>
+public class UpdateShoppingCartItemQuantityInputValidator : AbstractValidator<UpdateShoppingCartItemQuantityInput>
+{
+    public UpdateShoppingCartItemQuantityInputValidator()
+    {
+        #region Rules
+
+        RuleFor(x => x.Quantity)
+            .InclusiveBetween(0, 1000)
+            .WithMessage("كمية العنصر في السلة يجب أن تكون بين 0 و 1000 قطعة (الصفر يعني حذف العنصر).");
+
+        #endregion
+    }
+}
 #endregion

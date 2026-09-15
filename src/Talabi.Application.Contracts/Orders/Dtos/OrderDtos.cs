@@ -37,6 +37,7 @@ public class OrderDto : FullAuditedEntityDto<Guid>
     public DateTime? ActualDeliveryTime { get; set; }
     public DateTime? ConfirmedAt { get; set; }
     public DateTime? CancelledAt { get; set; }
+    public string? PaymentReceiptUrl { get; set; }
     public List<OrderItemDto> Items { get; set; } = new();
     #endregion
 }
@@ -79,6 +80,9 @@ public class CreateOrderInput
     [StringLength(OrderConsts.MaxCustomerNotesLength)]
     public string? CustomerNotes { get; set; }
 
+    [MaxLength(2048, ErrorMessage = "رابط صورة الإيصال طويل جداً")]
+    public string? PaymentReceiptUrl { get; set; }
+
     [Required(ErrorMessage = "يجب تحديد عناصر الطلب")]
     public List<CreateOrderItemDto> Items { get; set; } = new();
     #endregion
@@ -115,5 +119,25 @@ public class GetOrderListInput : PagedAndSortedResultRequestDto
     public Guid? CourierId { get; set; }
     public DateTime? FromDate { get; set; }
     public DateTime? ToDate { get; set; }
+    #endregion
+}
+
+/// <summary>
+/// كائن إتمام الطلب مباشرة من سلة المشتريات
+/// </summary>
+public class CheckoutCartInput
+{
+    #region Properties
+    [Required(ErrorMessage = "معرف عنوان التوصيل مطلوب")]
+    public Guid DeliveryAddressId { get; set; }
+
+    [Required(ErrorMessage = "معرف طريقة الدفع مطلوب")]
+    public Guid PaymentMethodId { get; set; }
+
+    [StringLength(OrderConsts.MaxCustomerNotesLength)]
+    public string? CustomerNotes { get; set; }
+
+    [MaxLength(2048, ErrorMessage = "رابط صورة الإيصال طويل جداً")]
+    public string? PaymentReceiptUrl { get; set; }
     #endregion
 }

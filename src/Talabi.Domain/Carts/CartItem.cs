@@ -9,6 +9,8 @@ namespace Talabi.Carts;
 /// </summary>
 public class CartItem : CreationAuditedEntity<Guid>
 {
+    #region 1. Properties
+
     /// <summary>
     /// معرف السلة التابع لها العنصر
     /// </summary>
@@ -30,6 +32,11 @@ public class CartItem : CreationAuditedEntity<Guid>
     public virtual decimal UnitPriceAtAddition { get; set; }
 
     /// <summary>
+    /// إجمالي سعر السطر وفق آخر سعر محفوظ في السلة
+    /// </summary>
+    public virtual decimal TotalPrice { get; protected set; }
+
+    /// <summary>
     /// ملاحظات العميل الخاصة بهذا المنتج
     /// </summary>
     public virtual string? Notes { get; set; }
@@ -38,6 +45,10 @@ public class CartItem : CreationAuditedEntity<Guid>
     /// وقت وتاريخ الإضافة
     /// </summary>
     public virtual DateTime AddedAt { get; set; }
+
+    #endregion
+
+    #region 2. Navigation Properties & Relations
 
     /// <summary>
     /// السلة المرتبطة
@@ -48,6 +59,10 @@ public class CartItem : CreationAuditedEntity<Guid>
     /// المنتج المرتبط
     /// </summary>
     public virtual Product? Product { get; set; }
+
+    #endregion
+
+    #region 3. Constructors
 
     protected CartItem()
     {
@@ -66,7 +81,21 @@ public class CartItem : CreationAuditedEntity<Guid>
         ProductId = productId;
         Quantity = quantity;
         UnitPriceAtAddition = unitPriceAtAddition;
+        TotalPrice = unitPriceAtAddition * quantity;
         Notes = notes;
         AddedAt = DateTime.UtcNow;
     }
+
+    #endregion
+
+    #region 4. Business Logic Methods
+
+    public virtual void ChangeQuantity(int quantity, decimal unitPrice)
+    {
+        Quantity = quantity;
+        UnitPriceAtAddition = unitPrice;
+        TotalPrice = unitPrice * quantity;
+    }
+
+    #endregion
 }

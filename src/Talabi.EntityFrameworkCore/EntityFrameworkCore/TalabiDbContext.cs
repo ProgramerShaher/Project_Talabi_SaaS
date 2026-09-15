@@ -63,6 +63,7 @@ public class TalabiDbContext :
     public DbSet<Talabi.Stores.StoreType> StoreTypes { get; set; }
     public DbSet<Talabi.Stores.Store> Stores { get; set; }
     public DbSet<Talabi.Stores.StoreUser> StoreUsers { get; set; }
+    public DbSet<Talabi.Stores.StorePaymentAccount> StorePaymentAccounts { get; set; }
 
     // 3. Categories
     public DbSet<Talabi.Categories.Category> Categories { get; set; }

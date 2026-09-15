@@ -1,13 +1,20 @@
 using System;
 using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
 
 namespace Talabi.Customers;
 
 /// <summary>
 /// كيان عنوان توصيل العميل
 /// </summary>
-public class CustomerAddress : FullAuditedEntity<Guid>
+public class CustomerAddress : FullAuditedEntity<Guid>, IMultiTenant
 {
+    #region Properties
+    /// <summary>
+    /// معرف المستأجر
+    /// </summary>
+    public virtual Guid? TenantId { get; protected set; }
+
     /// <summary>
     /// معرف العميل التابع له العنوان
     /// </summary>
@@ -82,12 +89,16 @@ public class CustomerAddress : FullAuditedEntity<Guid>
     /// هل هو العنوان الافتراضي للتوصيل؟
     /// </summary>
     public virtual bool IsDefault { get; set; }
+    #endregion
 
+    #region Navigation Properties
     /// <summary>
     /// كائن العميل المرتبط
     /// </summary>
     public virtual Customer? Customer { get; set; }
+    #endregion
 
+    #region Constructors
     protected CustomerAddress()
     {
     }
@@ -104,6 +115,7 @@ public class CustomerAddress : FullAuditedEntity<Guid>
         string city,
         string district,
         string street,
+        Guid? tenantId = null,
         bool isDefault = false)
         : base(id)
     {
@@ -117,6 +129,8 @@ public class CustomerAddress : FullAuditedEntity<Guid>
         City = city;
         District = district;
         Street = street;
+        TenantId = tenantId;
         IsDefault = isDefault;
     }
+    #endregion
 }

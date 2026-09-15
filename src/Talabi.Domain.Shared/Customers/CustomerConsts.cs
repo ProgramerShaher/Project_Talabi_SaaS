@@ -14,6 +14,11 @@ public static class CustomerConsts
     /// اللغة الافتراضية
     /// </summary>
     public const string DefaultPreferredLanguage = "ar";
+
+    /// <summary>
+    /// أقصى طول لرابط الصورة الشخصية
+    /// </summary>
+    public const int MaxAvatarUrlLength = 500;
 }
 
 /// <summary>

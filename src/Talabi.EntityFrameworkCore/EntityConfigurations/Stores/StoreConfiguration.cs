@@ -102,6 +102,11 @@ public class StoreConfiguration : IEntityTypeConfiguration<Store>
             .WithOne(x => x.Store)
             .HasForeignKey(x => x.StoreId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(x => x.PaymentAccounts)
+            .WithOne(x => x.Store)
+            .HasForeignKey(x => x.StoreId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
 
@@ -123,5 +128,25 @@ public class StoreUserConfiguration : IEntityTypeConfiguration<StoreUser>
         builder.HasIndex(x => new { x.StoreId, x.UserId })
             .IsUnique()
             .HasDatabaseName("IX_StoreUsers_StoreId_UserId");
+    }
+}
+
+/// <summary>
+/// إعدادات جدول حسابات الدفع للمتاجر
+/// </summary>
+public class StorePaymentAccountConfiguration : IEntityTypeConfiguration<StorePaymentAccount>
+{
+    public void Configure(EntityTypeBuilder<StorePaymentAccount> builder)
+    {
+        builder.ConfigureByConvention();
+
+        builder.ToTable(TalabiConsts.DbTablePrefix + "StorePaymentAccounts", TalabiConsts.DbSchema);
+
+        builder.Property(x => x.ProviderName).IsRequired().HasMaxLength(64);
+        builder.Property(x => x.AccountNumber).IsRequired().HasMaxLength(64);
+        builder.Property(x => x.AccountName).IsRequired().HasMaxLength(128);
+        builder.Property(x => x.Notes).HasMaxLength(512);
+        
+        builder.HasIndex(x => x.StoreId);
     }
 }

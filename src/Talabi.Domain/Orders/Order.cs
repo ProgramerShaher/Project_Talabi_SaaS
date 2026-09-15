@@ -88,6 +88,11 @@ public class Order : FullAuditedAggregateRoot<Guid>, IMultiTenant
     public virtual Guid? CourierId { get; set; }
 
     /// <summary>
+    /// رابط صورة سند/إشعار التحويل البنكي أو المالي في حال اختار العميل الدفع يدوياً
+    /// </summary>
+    public virtual string? PaymentReceiptUrl { get; set; }
+
+    /// <summary>
     /// ملاحظات أو تعليمات العميل على الطلب
     /// </summary>
     public virtual string? CustomerNotes { get; set; }

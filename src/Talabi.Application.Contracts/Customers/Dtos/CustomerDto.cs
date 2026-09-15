@@ -5,15 +5,32 @@ using Volo.Abp.Application.Dtos;
 namespace Talabi.Customers.Dtos;
 
 /// <summary>
-/// كائن عرض بيانات العميل للواجهة الأمامية
+/// كائن عرض بيانات العميل الكاملة للواجهة الأمامية
+/// يجمع بيانات هوية المستخدم من AbpUsers مع بيانات العميل التجارية من Customer
 /// </summary>
 public class CustomerDto : FullAuditedEntityDto<Guid>
 {
     #region Properties
+
     /// <summary>
-    /// معرف حساب المستخدم الأساسي
+    /// معرف حساب المستخدم الأساسي في ABP (AbpUsers)
     /// </summary>
     public Guid UserId { get; set; }
+
+    /// <summary>
+    /// الاسم الكامل للعميل - مجلوب من AbpUser
+    /// </summary>
+    public string FullName { get; set; } = string.Empty;
+
+    /// <summary>
+    /// البريد الإلكتروني - مجلوب من AbpUser
+    /// </summary>
+    public string Email { get; set; } = string.Empty;
+
+    /// <summary>
+    /// رقم الهاتف - مجلوب من AbpUser
+    /// </summary>
+    public string? PhoneNumber { get; set; }
 
     /// <summary>
     /// تاريخ ميلاد العميل
@@ -26,7 +43,7 @@ public class CustomerDto : FullAuditedEntityDto<Guid>
     public Gender? Gender { get; set; }
 
     /// <summary>
-    /// رصيد نقاط الولاء المكتسبة
+    /// رصيد نقاط الولاء المتراكمة
     /// </summary>
     public int LoyaltyPoints { get; set; }
 
@@ -36,8 +53,14 @@ public class CustomerDto : FullAuditedEntityDto<Guid>
     public string PreferredLanguage { get; set; } = CustomerConsts.DefaultPreferredLanguage;
 
     /// <summary>
-    /// قائمة عناوين العميل المسجلة
+    /// رابط الصورة الشخصية
+    /// </summary>
+    public string? AvatarUrl { get; set; }
+
+    /// <summary>
+    /// قائمة عناوين التوصيل المسجلة للعميل
     /// </summary>
     public List<CustomerAddressDto> Addresses { get; set; } = new();
+
     #endregion
 }

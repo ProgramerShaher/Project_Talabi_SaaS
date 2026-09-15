@@ -67,4 +67,15 @@ public static class TalabiPermissions
         public const string Edit    = Default + ".Edit";
         public const string Delete  = Default + ".Delete";
     }
+
+    /// <summary>
+    /// صلاحيات إدارة العملاء
+    /// </summary>
+    public static class Customers
+    {
+        public const string Default = GroupName + ".Customers";
+        public const string Create  = Default + ".Create";
+        public const string Edit    = Default + ".Edit";
+        public const string Delete  = Default + ".Delete";
+    }
 }

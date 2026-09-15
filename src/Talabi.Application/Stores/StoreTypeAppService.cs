@@ -14,7 +14,7 @@ namespace Talabi.Stores;
 /// <summary>
 /// خدمة إدارة أنواع المتاجر
 /// </summary>
-[Authorize(TalabiPermissions.StoreTypes.Default)]
+[Authorize]
 public class StoreTypeAppService : ApplicationService, IStoreTypeAppService
 {
     private readonly IRepository<StoreType, Guid> _storeTypeRepository;

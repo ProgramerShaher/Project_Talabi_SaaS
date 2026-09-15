@@ -230,6 +230,7 @@ public class TalabiHttpApiHostModule : AbpModule
         app.UseDynamicClaims();
         app.UseAuthorization();
 
+        app.UseStaticFiles();
         app.UseSwagger();
         app.UseAbpSwaggerUI(c =>
         {
@@ -238,6 +239,9 @@ public class TalabiHttpApiHostModule : AbpModule
             var configuration = context.ServiceProvider.GetRequiredService<IConfiguration>();
             c.OAuthClientId(configuration["AuthServer:SwaggerClientId"]);
             c.OAuthScopes("Talabi");
+
+            c.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None);
+            c.InjectJavascript("/custom-swagger.js");
         });
 
         app.UseAuditing();

@@ -110,14 +110,6 @@ public class CancelOrderInputValidator : AbstractValidator<CancelOrderInput>
     public CancelOrderInputValidator()
     {
         #region Rules
-        RuleFor(x => x.OrderId)
-            .NotEmpty()
-            .WithMessage("معرف الطلب المراد إلغاؤه إلزامي.");
-
-        RuleFor(x => x.CancellationReasonId)
-            .NotEmpty()
-            .WithMessage("معرف سبب الإلغاء إلزامي.");
-
         When(x => !string.IsNullOrEmpty(x.AdditionalNotes), () =>
         {
             RuleFor(x => x.AdditionalNotes)

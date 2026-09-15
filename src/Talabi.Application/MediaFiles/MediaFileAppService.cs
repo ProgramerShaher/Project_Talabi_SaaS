@@ -16,9 +16,10 @@ using Volo.Abp.Content;
 namespace Talabi.MediaFiles;
 
 /// <summary>
-/// تنفيذ خدمة إدارة וرفع الملفات (تعمل حالياً بالتخزين المحلي)
+/// تنفيذ خدمة إدارة ورفع الملفات (تعمل حالياً بالتخزين المحلي)
 /// </summary>
 [Authorize] // يحتاج لتسجيل دخول لرفع الملفات
+[RemoteService(IsEnabled = false)]
 public class MediaFileAppService : ApplicationService, IMediaFileAppService
 {
     private readonly IRepository<MediaFile, Guid> _mediaFileRepository;

@@ -135,3 +135,42 @@ public class UpdateStoreDto
     public bool IsFeatured { get; set; }
     #endregion
 }
+
+/// <summary>
+/// كائن عرض حساب دفع للمتجر
+/// </summary>
+public class StorePaymentAccountDto : FullAuditedEntityDto<Guid>
+{
+    public Guid StoreId { get; set; }
+    public string ProviderName { get; set; } = string.Empty;
+    public string AccountNumber { get; set; } = string.Empty;
+    public string AccountName { get; set; } = string.Empty;
+    public bool IsActive { get; set; }
+    public string? Notes { get; set; }
+}
+
+/// <summary>
+/// كائن إنشاء حساب دفع جديد للمتجر
+/// </summary>
+public class CreateStorePaymentAccountDto
+{
+    [Required(ErrorMessage = "معرف المتجر مطلوب")]
+    public Guid StoreId { get; set; }
+
+    [Required(ErrorMessage = "اسم مزود الخدمة مطلوب (مثل: جوالي، الكريمي)")]
+    [StringLength(64)]
+    public string ProviderName { get; set; } = string.Empty;
+
+    [Required(ErrorMessage = "رقم الحساب أو رقم الهاتف مطلوب")]
+    [StringLength(64)]
+    public string AccountNumber { get; set; } = string.Empty;
+
+    [Required(ErrorMessage = "اسم صاحب الحساب مطلوب للمطابقة")]
+    [StringLength(128)]
+    public string AccountName { get; set; } = string.Empty;
+
+    public bool IsActive { get; set; } = true;
+
+    [StringLength(512)]
+    public string? Notes { get; set; }
+}

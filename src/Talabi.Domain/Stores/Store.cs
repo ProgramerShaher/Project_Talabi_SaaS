@@ -135,6 +135,11 @@ public class Store : FullAuditedAggregateRoot<Guid>, IMultiTenant
     /// </summary>
     public virtual ICollection<StoreUser> StoreUsers { get; protected set; } = new List<StoreUser>();
 
+    /// <summary>
+    /// قائمة حسابات الدفع والتحويل الخاصة بالمتجر
+    /// </summary>
+    public virtual ICollection<StorePaymentAccount> PaymentAccounts { get; protected set; } = new List<StorePaymentAccount>();
+
     protected Store()
     {
     }
