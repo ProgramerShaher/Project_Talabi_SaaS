@@ -152,6 +152,11 @@ public class Product : FullAuditedAggregateRoot<Guid>, IMultiTenant
     /// </summary>
     public virtual ICollection<ProductImage> Images { get; protected set; } = new List<ProductImage>();
 
+    /// <summary>
+    /// وحدات بيع المنتج المخصصة (اختيارية)
+    /// </summary>
+    public virtual ICollection<ProductSalesUnit> SalesUnits { get; protected set; } = new List<ProductSalesUnit>();
+
     // /// <summary>
     // /// سجل المخزون التابع لهذا المنتج - معطل لأن النظام للعرض فقط ولا يتدخل في كمية المخزون
     // /// </summary>

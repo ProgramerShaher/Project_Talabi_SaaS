@@ -12,6 +12,7 @@ using Talabi.Products.Dtos;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
 
 namespace Talabi.Products;
@@ -21,20 +22,34 @@ public class ProductAppService : ApplicationService, IProductAppService
 {
     private readonly IRepository<Product, Guid> _productRepository;
     private readonly IRepository<StoreCategory, Guid> _storeCategoryRepository;
+    private readonly IRepository<SalesUnit, Guid> _salesUnitRepository;
+    private readonly IRepository<ProductSalesUnit, Guid> _productSalesUnitRepository;
     private readonly ProductMapper _mapper;
+    private readonly SalesUnitMapper _salesUnitMapper;
 
     public ProductAppService(
         IRepository<Product, Guid> productRepository,
-        IRepository<StoreCategory, Guid> storeCategoryRepository)
+        IRepository<StoreCategory, Guid> storeCategoryRepository,
+        IRepository<SalesUnit, Guid> salesUnitRepository,
+        IRepository<ProductSalesUnit, Guid> productSalesUnitRepository)
     {
         _productRepository = productRepository;
         _storeCategoryRepository = storeCategoryRepository;
+        _salesUnitRepository = salesUnitRepository;
+        _productSalesUnitRepository = productSalesUnitRepository;
         _mapper = new ProductMapper();
+        _salesUnitMapper = new SalesUnitMapper();
     }
 
     public async Task<ProductDto> GetAsync(Guid id)
     {
-        var product = await _productRepository.GetAsync(id);
+        var query = await _productRepository.WithDetailsAsync(x => x.Images, x => x.SalesUnits);
+        var product = await AsyncExecuter.FirstOrDefaultAsync(query.Where(x => x.Id == id));
+
+        if (product == null)
+        {
+            throw new EntityNotFoundException(typeof(Product), id);
+        }
         
         // جلب التصنيف إن وجد للـ DTO
         if (product.StoreCategoryId.HasValue)
@@ -43,12 +58,18 @@ public class ProductAppService : ApplicationService, IProductAppService
             product.StoreCategory = category;
         }
 
-        return _mapper.ToProductDto(product);
+        var dto = _mapper.ToProductDto(product);
+        if (product.SalesUnits?.Count > 0)
+        {
+            dto.SalesUnits = _salesUnitMapper.ToProductSalesUnitDtoList(product.SalesUnits.OrderBy(u => u.DisplayOrder).ToList());
+        }
+
+        return dto;
     }
 
     public async Task<PagedResultDto<ProductDto>> GetListAsync(GetProductListInput input)
     {
-        var queryable = await _productRepository.GetQueryableAsync();
+        var queryable = await _productRepository.WithDetailsAsync(x => x.Images, x => x.SalesUnits);
 
         var query = queryable
             .WhereIf(input.StoreId.HasValue, x => x.StoreId == input.StoreId)
@@ -73,9 +94,20 @@ public class ProductAppService : ApplicationService, IProductAppService
             product.StoreCategory = categories.FirstOrDefault(c => c.Id == product.StoreCategoryId);
         }
 
+        var dtoList = new List<ProductDto>();
+        foreach (var product in products)
+        {
+            var pDto = _mapper.ToProductDto(product);
+            if (product.SalesUnits?.Count > 0)
+            {
+                pDto.SalesUnits = _salesUnitMapper.ToProductSalesUnitDtoList(product.SalesUnits.OrderBy(u => u.DisplayOrder).ToList());
+            }
+            dtoList.Add(pDto);
+        }
+
         return new PagedResultDto<ProductDto>(
             totalCount,
-            _mapper.ToProductDtoList(products)
+            dtoList
         );
     }
 
@@ -107,6 +139,33 @@ public class ProductAppService : ApplicationService, IProductAppService
         // يعاد حساب السعر النهائي بعد تطبيق القيم من الـ Mapper في حال وجود خصم
         product.CalculateFinalPrice();
 
+        // معالجة وحدات البيع الاختيارية إن وُجدت
+        if (input.SalesUnits != null && input.SalesUnits.Count > 0)
+        {
+            var defaultCount = input.SalesUnits.Count(u => u.IsDefault);
+            if (defaultCount > 1)
+            {
+                throw new UserFriendlyException("يمكن تحديد وحدة بيع افتراضية واحدة فقط للمنتج.");
+            }
+
+            foreach (var uInput in input.SalesUnits)
+            {
+                var salesUnit = await _salesUnitRepository.GetAsync(uInput.SalesUnitId);
+                var unitName = !string.IsNullOrWhiteSpace(uInput.UnitName) ? uInput.UnitName : salesUnit.Name;
+
+                product.SalesUnits.Add(new ProductSalesUnit(
+                    GuidGenerator.Create(),
+                    product.Id,
+                    salesUnit.Id,
+                    unitName,
+                    uInput.Price,
+                    uInput.IsDefault,
+                    uInput.IsActive,
+                    uInput.DisplayOrder
+                ));
+            }
+        }
+
         await _productRepository.InsertAsync(product, autoSave: true);
         return await GetAsync(product.Id);
     }
@@ -114,7 +173,12 @@ public class ProductAppService : ApplicationService, IProductAppService
     [Authorize(TalabiPermissions.Products.Edit)]
     public async Task<ProductDto> UpdateAsync(Guid id, UpdateProductDto input)
     {
-        var product = await _productRepository.GetAsync(id);
+        var query = await _productRepository.WithDetailsAsync(x => x.SalesUnits);
+        var product = await AsyncExecuter.FirstOrDefaultAsync(query.Where(x => x.Id == id));
+        if (product == null)
+        {
+            throw new EntityNotFoundException(typeof(Product), id);
+        }
 
         // التحقق من تكرار SKU في نفس المتجر مع استثناء المنتج الحالي
         var exists = await _productRepository.AnyAsync(x => x.Id != id && x.StoreId == product.StoreId && x.SKU == input.SKU);
@@ -126,7 +190,35 @@ public class ProductAppService : ApplicationService, IProductAppService
         _mapper.ApplyUpdateDto(input, product);
         product.CalculateFinalPrice();
 
-        await _productRepository.UpdateAsync(product);
+        // تحديث وحدات البيع المخصصة إذا تم تمريرها (اختيارية)
+        if (input.SalesUnits != null)
+        {
+            var defaultCount = input.SalesUnits.Count(u => u.IsDefault);
+            if (defaultCount > 1)
+            {
+                throw new UserFriendlyException("يمكن تحديد وحدة بيع افتراضية واحدة فقط للمنتج.");
+            }
+
+            product.SalesUnits.Clear();
+            foreach (var uInput in input.SalesUnits)
+            {
+                var salesUnit = await _salesUnitRepository.GetAsync(uInput.SalesUnitId);
+                var unitName = !string.IsNullOrWhiteSpace(uInput.UnitName) ? uInput.UnitName : salesUnit.Name;
+
+                product.SalesUnits.Add(new ProductSalesUnit(
+                    uInput.Id ?? GuidGenerator.Create(),
+                    product.Id,
+                    salesUnit.Id,
+                    unitName,
+                    uInput.Price,
+                    uInput.IsDefault,
+                    uInput.IsActive,
+                    uInput.DisplayOrder
+                ));
+            }
+        }
+
+        await _productRepository.UpdateAsync(product, autoSave: true);
         return await GetAsync(product.Id);
     }
 

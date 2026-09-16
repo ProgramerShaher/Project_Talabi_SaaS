@@ -84,4 +84,51 @@ public class PaymentReceipt : FullAuditedEntity<Guid>
         VerificationStatus = ReceiptVerificationStatus.Pending;
         UploadedAt = DateTime.UtcNow;
     }
+
+    /// <summary>
+    /// قبول واعتماد إيصال الدفع
+    /// </summary>
+    public void Verify(Guid verifiedByUserId)
+    {
+        VerificationStatus = ReceiptVerificationStatus.Verified;
+        VerifiedByUserId = verifiedByUserId;
+        VerifiedAt = DateTime.UtcNow;
+        RejectionReason = null;
+    }
+
+    /// <summary>
+    /// رفض إيصال الدفع مع تدوين السبب
+    /// </summary>
+    public void Reject(Guid verifiedByUserId, string reason)
+    {
+        VerificationStatus = ReceiptVerificationStatus.Rejected;
+        VerifiedByUserId = verifiedByUserId;
+        VerifiedAt = DateTime.UtcNow;
+        RejectionReason = reason;
+    }
+
+    /// <summary>
+    /// تحديث بيانات الإيصال وإعادة ضبطه قيد الانتظار عند إعادة الرفع
+    /// </summary>
+    public void Resubmit(Guid mediaFileId, string? walletName = null, string? transactionNumber = null, decimal? amount = null)
+    {
+        MediaFileId = mediaFileId;
+        if (!string.IsNullOrWhiteSpace(walletName))
+        {
+            WalletName = walletName;
+        }
+        if (!string.IsNullOrWhiteSpace(transactionNumber))
+        {
+            TransactionNumber = transactionNumber;
+        }
+        if (amount.HasValue)
+        {
+            Amount = amount.Value;
+        }
+        VerificationStatus = ReceiptVerificationStatus.Pending;
+        RejectionReason = null;
+        UploadedAt = DateTime.UtcNow;
+        VerifiedAt = null;
+        VerifiedByUserId = null;
+    }
 }

@@ -19,22 +19,6 @@ public class OrderStatusDto : EntityDto<Guid>
     #endregion
 }
 
-/// <summary>
-/// كائن سجل تتبع تغير حالة الطلب
-/// </summary>
-public class OrderStatusHistoryDto : CreationAuditedEntityDto<Guid>
-{
-    #region Properties
-    public Guid OrderId { get; set; }
-    public Guid? FromStatusId { get; set; }
-    public string? FromStatusName { get; set; }
-    public Guid ToStatusId { get; set; }
-    public string ToStatusName { get; set; } = string.Empty;
-    public Guid ChangedByUserId { get; set; }
-    public string ChangedByRole { get; set; } = string.Empty;
-    public string? Notes { get; set; }
-    #endregion
-}
 
 /// <summary>
 /// كائن سبب الإلغاء أو الرفض

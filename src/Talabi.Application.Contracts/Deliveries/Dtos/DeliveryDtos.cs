@@ -137,3 +137,57 @@ public class ConfirmDeliveryInput
     public string? Notes { get; set; }
     #endregion
 }
+
+/// <summary>
+/// كائن تعديل بيانات مندوب التوصيل
+/// </summary>
+public class UpdateCourierDto
+{
+    #region Properties
+    [StringLength(CourierConsts.MaxVehicleTypeLength)]
+    public string? VehicleType { get; set; }
+
+    [StringLength(CourierConsts.MaxVehicleNumberLength)]
+    public string? VehicleNumber { get; set; }
+
+    [StringLength(CourierConsts.MaxLicenseNumberLength)]
+    public string? LicenseNumber { get; set; }
+
+    public bool? IsAvailable { get; set; }
+    #endregion
+}
+
+/// <summary>
+/// كائن فلترة وبحث قائمة المناديب
+/// </summary>
+public class GetCourierListInput : PagedAndSortedResultRequestDto
+{
+    #region Properties
+    public string? Filter { get; set; }
+    public bool? IsAvailable { get; set; }
+    public bool? IsOnline { get; set; }
+    public string? VehicleType { get; set; }
+    #endregion
+}
+
+/// <summary>
+/// كائن استعلام مشاوير المندوب الحالي
+/// </summary>
+public class GetMyDeliveriesInput : PagedAndSortedResultRequestDto
+{
+    #region Properties
+    public DeliveryAssignmentStatus? Status { get; set; }
+    #endregion
+}
+
+/// <summary>
+/// كائن تسجيل فشل توصيل الطلب
+/// </summary>
+public class FailDeliveryInput
+{
+    #region Properties
+    [Required(ErrorMessage = "سبب تعثر وفشل التوصيل مطلوب")]
+    [StringLength(DeliveryConfirmationConsts.MaxNotesLength)]
+    public string Reason { get; set; } = string.Empty;
+    #endregion
+}

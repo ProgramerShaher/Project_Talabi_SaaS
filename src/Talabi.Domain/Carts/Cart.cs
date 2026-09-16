@@ -95,9 +95,16 @@ public class Cart : FullAuditedAggregateRoot<Guid>
 
     #region 4. Business Logic Methods
 
-    public virtual CartItem AddItem(Guid itemId, Guid productId, int quantity, decimal unitPrice, string? notes = null)
+    public virtual CartItem AddItem(
+        Guid itemId,
+        Guid productId,
+        int quantity,
+        decimal unitPrice,
+        string? notes = null,
+        Guid? salesUnitId = null,
+        string? unitName = null)
     {
-        var existingItem = Items.FirstOrDefault(x => x.ProductId == productId);
+        var existingItem = Items.FirstOrDefault(x => x.ProductId == productId && x.SalesUnitId == salesUnitId);
         if (existingItem is not null)
         {
             existingItem.ChangeQuantity(existingItem.Quantity + quantity, unitPrice);
@@ -105,7 +112,7 @@ public class Cart : FullAuditedAggregateRoot<Guid>
             return existingItem;
         }
 
-        var item = new CartItem(itemId, Id, productId, quantity, unitPrice, notes);
+        var item = new CartItem(itemId, Id, productId, quantity, unitPrice, notes, salesUnitId, unitName);
         Items.Add(item);
         Touch();
         return item;
@@ -152,7 +159,7 @@ public class Cart : FullAuditedAggregateRoot<Guid>
 
     public virtual void RecalculateTotals(IEnumerable<CartItemPriceSnapshot> prices)
     {
-        var priceByProductId = prices.ToDictionary(x => x.ProductId);
+        var priceLookup = prices.ToDictionary(x => (x.ProductId, x.SalesUnitId));
 
         SubTotal = 0m;
         TotalDiscount = 0m;
@@ -160,7 +167,7 @@ public class Cart : FullAuditedAggregateRoot<Guid>
 
         foreach (var item in Items)
         {
-            if (!priceByProductId.TryGetValue(item.ProductId, out var price))
+            if (!priceLookup.TryGetValue((item.ProductId, item.SalesUnitId), out var price))
             {
                 continue;
             }
@@ -183,6 +190,7 @@ public class Cart : FullAuditedAggregateRoot<Guid>
 
 public sealed record CartItemPriceSnapshot(
     Guid ProductId,
+    Guid? SalesUnitId,
     decimal OriginalUnitPrice,
     decimal CurrentUnitPrice)
 {

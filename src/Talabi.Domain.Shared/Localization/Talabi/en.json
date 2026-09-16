@@ -26,6 +26,28 @@
     "DisplayName:CustomerAddress:Longitude": "Longitude",
     "DisplayName:CustomerAddress:IsDefault": "Is Default Address",
     "Enum:Gender:Male": "Male",
-    "Enum:Gender:Female": "Female"
+    "Enum:Gender:Female": "Female",
+    "Permission:SalesUnits": "Sales Units Management",
+    "Permission:SalesUnits.Create": "Create Sales Unit",
+    "Permission:SalesUnits.Edit": "Edit Sales Unit",
+    "Permission:SalesUnits.Delete": "Delete Sales Unit",
+    "Permission:Reviews": "Store Reviews & Ratings Management",
+    "Permission:Reviews.Reply": "Reply to Store Reviews",
+    "Permission:Reviews.Manage": "Manage Reviews & Visibility",
+    "Permission:Deliveries": "Deliveries & Couriers Management",
+    "Permission:Deliveries.ManageCouriers": "Manage & Register Couriers",
+    "Permission:Deliveries.Assign": "Assign Orders to Couriers",
+    "Permission:Deliveries.Track": "Track Deliveries & Courier Locations",
+    "Permission:Payments": "Payments & Receipts Management",
+    "Permission:Payments.VerifyReceipts": "Review & Verify Payment Receipts",
+    "Permission:Payments.Manage": "Full Payment Management",
+    "Permission:Stores": "Stores Management",
+    "Permission:Stores.Create": "Create Store",
+    "Permission:Stores.Edit": "Edit Store",
+    "Permission:Stores.Delete": "Delete Store",
+    "Permission:Stores.Approve": "Approve Store",
+    "Permission:Stores.Suspend": "Suspend Store",
+    "Permission:Stores.ManageWorkingHours": "Manage Store Working Hours"
   }
 }
+

@@ -16,6 +16,16 @@ public class ShoppingCartItemDto : EntityDto<Guid>
 
     public string? ProductImageUrl { get; set; }
 
+    /// <summary>
+    /// معرف وحدة البيع المحددة
+    /// </summary>
+    public Guid? SalesUnitId { get; set; }
+
+    /// <summary>
+    /// اسم وحدة البيع (مثل: كيس، كيلو، حبة)
+    /// </summary>
+    public string UnitName { get; set; } = "حبة";
+
     public int Quantity { get; set; }
 
     public decimal UnitPrice { get; set; }

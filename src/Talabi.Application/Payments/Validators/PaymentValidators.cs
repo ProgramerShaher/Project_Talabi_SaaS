@@ -14,9 +14,9 @@ public class SubmitPaymentReceiptInputValidator : AbstractValidator<SubmitPaymen
     public SubmitPaymentReceiptInputValidator()
     {
         #region Rules
-        RuleFor(x => x.PaymentId)
-            .NotEmpty()
-            .WithMessage("معرف عملية الدفع (PaymentId) إلزامي.");
+        RuleFor(x => x)
+            .Must(x => (x.PaymentId.HasValue && x.PaymentId.Value != Guid.Empty) || (x.OrderId.HasValue && x.OrderId.Value != Guid.Empty))
+            .WithMessage("يجب تحديد معرف عملية الدفع (PaymentId) أو معرف الطلب (OrderId).");
 
         RuleFor(x => x.MediaFileId)
             .NotEmpty()

@@ -40,6 +40,11 @@ public class OrderItem : CreationAuditedEntity<Guid>
     public virtual string Unit { get; set; } = string.Empty;
 
     /// <summary>
+    /// معرف وحدة البيع المحددة (اختياري)
+    /// </summary>
+    public virtual Guid? SalesUnitId { get; set; }
+
+    /// <summary>
     /// الكمية المطلوبة
     /// </summary>
     public virtual int Quantity { get; set; }
@@ -74,6 +79,11 @@ public class OrderItem : CreationAuditedEntity<Guid>
     /// </summary>
     public virtual Product? Product { get; set; }
 
+    /// <summary>
+    /// وحدة البيع المرتبطة إن وجدت
+    /// </summary>
+    public virtual SalesUnit? SalesUnit { get; set; }
+
     protected OrderItem()
     {
     }
@@ -89,7 +99,8 @@ public class OrderItem : CreationAuditedEntity<Guid>
         decimal unitPrice,
         decimal discount = 0,
         string? notes = null,
-        string? productImageUrl = null)
+        string? productImageUrl = null,
+        Guid? salesUnitId = null)
         : base(id)
     {
         OrderId = orderId;
@@ -103,5 +114,6 @@ public class OrderItem : CreationAuditedEntity<Guid>
         TotalPrice = Math.Max(0, (unitPrice * quantity) - discount);
         Notes = notes;
         ProductImageUrl = productImageUrl;
+        SalesUnitId = salesUnitId;
     }
 }

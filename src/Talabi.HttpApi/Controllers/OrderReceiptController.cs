@@ -60,6 +60,6 @@ public class OrderReceiptController : TalabiController
             IsPublic = true
         });
 
-        return await _orderAppService.AttachPaymentReceiptAsync(id, mediaFile.PublicUrl ?? string.Empty);
+        return await _orderAppService.AttachPaymentReceiptAsync(id, mediaFile.PublicUrl ?? string.Empty, mediaFile.Id);
     }
 }

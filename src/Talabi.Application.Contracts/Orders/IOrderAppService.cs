@@ -32,9 +32,9 @@ public interface IOrderAppService : IApplicationService
     Task<OrderDto> CheckoutCartAsync(CheckoutCartInput input);
 
     /// <summary>
-    /// إرفاق أو تحديث رابط صورة إيصال الدفع للطلب
+    /// إرفاق أو تحديث رابط صورة إيصال الدفع للطلب مع ربطها بكيانات الدفع
     /// </summary>
-    Task<OrderDto> AttachPaymentReceiptAsync(Guid id, string receiptUrl);
+    Task<OrderDto> AttachPaymentReceiptAsync(Guid id, string receiptUrl, Guid? mediaFileId = null);
 
     /// <summary>
     /// تغيير حالة الطلب
@@ -52,9 +52,44 @@ public interface IOrderAppService : IApplicationService
     Task<OrderDto> CancelOrderAsync(Guid id, CancelOrderInput input);
 
     /// <summary>
-    /// قبول الطلب من قبل المتجر
+    /// جلب قائمة طلبات العميل الحالي مع الفلترة حسب (الكل، النشطة، السابقة)
     /// </summary>
-    Task<OrderDto> AcceptOrderAsync(Guid id, string? notes = null);
+    Task<PagedResultDto<OrderDto>> GetMyOrdersAsync(GetMyOrdersInput input);
+
+    /// <summary>
+    /// جلب إحصائيات ومؤشرات طلبات العميل الحالي
+    /// </summary>
+    Task<CustomerOrderStatsDto> GetMyOrderStatsAsync();
+
+    /// <summary>
+    /// جلب إحصائيات ومؤشرات أداء طلبات المتجر والمبيعات
+    /// </summary>
+    Task<StoreOrderStatsDto> GetStoreOrderStatsAsync(Guid storeId);
+
+    /// <summary>
+    /// اعتماد وتأكيد استلام الدفعة المالية للطلب من قبل المتجر بعد مراجعة الإيصال
+    /// </summary>
+    Task<OrderDto> ConfirmOrderPaymentAsync(Guid id, ConfirmOrderPaymentInput? input = null);
+
+    /// <summary>
+    /// إعادة الطلب السابق ونقل كافة أصنافه مباشرة إلى سلة المشتريات الحالية
+    /// </summary>
+    Task<Talabi.Carts.Dtos.ShoppingCartDto> ReorderAsync(Guid id);
+
+    /// <summary>
+    /// جلب المسار والخط الزمني لحالات الطلب
+    /// </summary>
+    Task<System.Collections.Generic.List<OrderStatusHistoryDto>> GetOrderTimelineAsync(Guid id);
+
+    /// <summary>
+    /// حذف الطلب من السجل (حذف ناعم Soft Delete مع التحقق من عدم كونه نشطاً)
+    /// </summary>
+    Task DeleteAsync(Guid id);
+
+    /// <summary>
+    /// قبول الطلب من قبل المتجر مع إمكانية تحديد وقت التوصيل المتوقع
+    /// </summary>
+    Task<OrderDto> AcceptOrderAsync(Guid id, AcceptOrderInput? input = null);
 
     /// <summary>
     /// رفض الطلب من قبل المتجر

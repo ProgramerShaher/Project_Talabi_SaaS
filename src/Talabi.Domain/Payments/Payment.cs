@@ -92,4 +92,35 @@ public class Payment : FullAuditedAggregateRoot<Guid>
         Currency = currency;
         Status = PaymentTransactionStatus.Pending;
     }
+
+    /// <summary>
+    /// وسم المعاملة كمكتملة وناجحة
+    /// </summary>
+    public void MarkAsCompleted(string? transactionReference = null)
+    {
+        Status = PaymentTransactionStatus.Completed;
+        PaidAt = DateTime.UtcNow;
+        if (!string.IsNullOrWhiteSpace(transactionReference))
+        {
+            TransactionReference = transactionReference;
+        }
+    }
+
+    /// <summary>
+    /// وسم المعاملة كفاشلة
+    /// </summary>
+    public void MarkAsFailed()
+    {
+        Status = PaymentTransactionStatus.Failed;
+    }
+
+    /// <summary>
+    /// وسم المعاملة كمسترجعة
+    /// </summary>
+    public void MarkAsRefunded(decimal? refundAmount = null)
+    {
+        Status = PaymentTransactionStatus.Refunded;
+        RefundedAt = DateTime.UtcNow;
+        RefundAmount = refundAmount ?? Amount;
+    }
 }

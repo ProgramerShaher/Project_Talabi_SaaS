@@ -25,13 +25,23 @@ public class NotificationTypeDataSeederContributor : IDataSeedContributor, ITran
 
     public async Task SeedAsync(DataSeedContext context)
     {
-        await SeedNotificationTypeAsync("OrderStatusChanged", "تحديث حالة الطلب", "fas fa-box-open", "#3498db");
-        await SeedNotificationTypeAsync("OrderAssignedToDriver", "تكليف بطلب جديد", "fas fa-motorcycle", "#f39c12");
-        await SeedNotificationTypeAsync("SystemAnnouncement", "إعلان إداري", "fas fa-bullhorn", "#e74c3c");
-        await SeedNotificationTypeAsync("OrderDelivered", "تم التوصيل", "fas fa-check-circle", "#2ecc71");
+        await SeedNotificationTypeAsync("NewOrderReceived", "طلب جديد وارد", "fas fa-shopping-bag", "#2980b9");
         await SeedNotificationTypeAsync("OrderAccepted", "تم قبول الطلب", "fas fa-check-circle", "#27ae60");
         await SeedNotificationTypeAsync("OrderRejected", "تم رفض الطلب", "fas fa-times-circle", "#c0392b");
         await SeedNotificationTypeAsync("OrderCancelled", "تم إلغاء الطلب", "fas fa-ban", "#7f8c8d");
+        await SeedNotificationTypeAsync("OrderAssignedToDriver", "تكليف بطلب جديد", "fas fa-motorcycle", "#f39c12");
+        await SeedNotificationTypeAsync("OrderAssignedToCourier", "تكليف بمشوار توصيل", "fas fa-motorcycle", "#f39c12");
+        await SeedNotificationTypeAsync("OrderCourierAccepted", "قبول المندوب للمشوار", "fas fa-user-check", "#16a085");
+        await SeedNotificationTypeAsync("OrderOutForDelivery", "الطلب في الطريق", "fas fa-truck", "#e67e22");
+        await SeedNotificationTypeAsync("OrderDelivered", "تم التوصيل بنجاح", "fas fa-check-circle", "#2ecc71");
+        await SeedNotificationTypeAsync("DeliveryFailed", "تعثر التوصيل", "fas fa-exclamation-triangle", "#d35400");
+        await SeedNotificationTypeAsync("OrderStatusChanged", "تحديث حالة الطلب", "fas fa-box-open", "#3498db");
+        await SeedNotificationTypeAsync("SystemAnnouncement", "إعلان إداري", "fas fa-bullhorn", "#e74c3c");
+        await SeedNotificationTypeAsync("PaymentReceiptSubmitted", "إيصال دفع جديد", "fas fa-receipt", "#2980b9");
+        await SeedNotificationTypeAsync("PaymentReceiptVerified", "قبول إيصال الدفع", "fas fa-file-invoice-dollar", "#27ae60");
+        await SeedNotificationTypeAsync("PaymentReceiptRejected", "رفض إيصال الدفع", "fas fa-file-excel", "#c0392b");
+        await SeedNotificationTypeAsync("StoreApproved", "الموافقة على المتجر", "fas fa-store", "#27ae60");
+        await SeedNotificationTypeAsync("StoreSuspended", "تعليق حساب المتجر", "fas fa-store-slash", "#c0392b");
     }
 
     private async Task SeedNotificationTypeAsync(string name, string displayName, string icon, string color)

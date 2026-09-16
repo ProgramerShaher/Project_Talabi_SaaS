@@ -130,4 +130,21 @@ public class GetReviewListInputValidator : AbstractValidator<GetReviewListInput>
         #endregion
     }
 }
+
+/// <summary>
+/// محدد قواعد التحقق لرد المتجر الرسمي على التقييم
+/// </summary>
+public class StoreReplyInputValidator : AbstractValidator<StoreReplyInput>
+{
+    public StoreReplyInputValidator()
+    {
+        #region Rules
+        RuleFor(x => x.Reply)
+            .NotEmpty()
+            .WithMessage("نص رد المتجر إلزامي ولا يمكن تركه فارغاً.")
+            .MaximumLength(ReviewConsts.MaxStoreReplyLength)
+            .WithMessage($"رد المتجر لا يمكن أن يتجاوز {ReviewConsts.MaxStoreReplyLength} حرفاً.");
+        #endregion
+    }
+}
 #endregion

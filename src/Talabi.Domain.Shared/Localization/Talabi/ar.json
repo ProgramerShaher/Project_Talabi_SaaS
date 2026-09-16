@@ -26,6 +26,28 @@
     "DisplayName:CustomerAddress:Longitude": "خط الطول",
     "DisplayName:CustomerAddress:IsDefault": "العنوان الافتراضي",
     "Enum:Gender:Male": "ذكر",
-    "Enum:Gender:Female": "أنثى"
+    "Enum:Gender:Female": "أنثى",
+    "Permission:SalesUnits": "إدارة وحدات البيع",
+    "Permission:SalesUnits.Create": "إضافة وحدة بيع",
+    "Permission:SalesUnits.Edit": "تعديل وحدة بيع",
+    "Permission:SalesUnits.Delete": "حذف وحدة بيع",
+    "Permission:Reviews": "إدارة تقييمات ومراجعات المتاجر",
+    "Permission:Reviews.Reply": "الرد على تقييمات المتاجر",
+    "Permission:Reviews.Manage": "التحكم في ظهور التقييمات وإدارتها",
+    "Permission:Deliveries": "إدارة المناديب والتوصيل الميداني",
+    "Permission:Deliveries.ManageCouriers": "إدارة وتسجيل المناديب",
+    "Permission:Deliveries.Assign": "إسناد وتعيين الطلبات للمناديب",
+    "Permission:Deliveries.Track": "تتبع مشاوير التوصيل ومواقع المناديب",
+    "Permission:Payments": "إدارة المدفوعات والتحقق من الإيصالات",
+    "Permission:Payments.VerifyReceipts": "مراجعة والتحقق من إيصالات التحويل المالي",
+    "Permission:Payments.Manage": "إدارة المعاملات المالية بالكامل",
+    "Permission:Stores": "إدارة المتاجر",
+    "Permission:Stores.Create": "إنشاء متجر",
+    "Permission:Stores.Edit": "تعديل متجر",
+    "Permission:Stores.Delete": "حذف متجر",
+    "Permission:Stores.Approve": "اعتماد وقبول المتجر",
+    "Permission:Stores.Suspend": "تعليق وإيقاف المتجر",
+    "Permission:Stores.ManageWorkingHours": "إدارة مواعيد وساعات عمل المتجر"
   }
 }
+

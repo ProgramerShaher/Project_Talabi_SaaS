@@ -1,4 +1,4 @@
-﻿namespace Talabi;
+namespace Talabi;
 
 public static class TalabiDomainErrorCodes
 {
@@ -8,4 +8,7 @@ public static class TalabiDomainErrorCodes
     public const string CartQuantityBelowMinimum = "Talabi:Carts:QuantityBelowMinimum";
     public const string CartQuantityAboveMaximum = "Talabi:Carts:QuantityAboveMaximum";
     public const string CartItemNotFound = "Talabi:Carts:CartItemNotFound";
+    public const string InvalidSalesUnit = "Talabi:Products:InvalidSalesUnit";
+    public const string InvalidSalesUnitQuantity = "Talabi:Products:InvalidSalesUnitQuantity";
+    public const string OnlyOneDefaultSalesUnitAllowed = "Talabi:Products:OnlyOneDefaultSalesUnitAllowed";
 }

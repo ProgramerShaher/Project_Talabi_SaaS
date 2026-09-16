@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Volo.Abp.Application.Dtos;
 
@@ -34,6 +35,10 @@ public class StoreDto : FullAuditedEntityDto<Guid>
     public decimal Rating { get; set; }
     public int TotalReviews { get; set; }
     public int TotalOrders { get; set; }
+    /// <summary>
+    /// هل المتجر مفتوح حالياً ومتاح لاستقبال الطلبات
+    /// </summary>
+    public bool IsOpenNow { get; set; }
     #endregion
 }
 
@@ -173,4 +178,162 @@ public class CreateStorePaymentAccountDto
 
     [StringLength(512)]
     public string? Notes { get; set; }
+}
+
+/// <summary>
+/// فترة عمل داخل اليوم
+/// </summary>
+public class WorkingHoursShiftDto
+{
+    /// <summary>
+    /// وقت الفتح بتنسيق 24 ساعة HH:mm (مثل: 08:00)
+    /// </summary>
+    [Required(ErrorMessage = "وقت بدء فترة العمل مطلوب")]
+    [RegularExpression(@"^([01]?[0-9]|2[0-3]):[0-5][0-9]$", ErrorMessage = "صيغة وقت الفتح يجب أن تكون HH:mm")]
+    public string OpeningTime { get; set; } = "08:00";
+
+    /// <summary>
+    /// وقت الإغلاق بتنسيق 24 ساعة HH:mm (مثل: 23:00)
+    /// </summary>
+    [Required(ErrorMessage = "وقت انتهاء فترة العمل مطلوب")]
+    [RegularExpression(@"^([01]?[0-9]|2[0-3]):[0-5][0-9]$", ErrorMessage = "صيغة وقت الإغلاق يجب أن تكون HH:mm")]
+    public string ClosingTime { get; set; } = "23:00";
+}
+
+/// <summary>
+/// بيانات ساعات عمل يوم محدد في الأسبوع
+/// </summary>
+public class StoreWorkingDayDto
+{
+    /// <summary>
+    /// يوم الأسبوع (Sunday = 0, Monday = 1, ...)
+    /// </summary>
+    public DayOfWeek DayOfWeek { get; set; }
+
+    /// <summary>
+    /// اسم اليوم باللغة العربية (الأحد، الإثنين، ...)
+    /// </summary>
+    public string DayName { get; set; } = string.Empty;
+
+    /// <summary>
+    /// هل المتجر يعمل في هذا اليوم أم مغلق (عطلة أسبوعية)
+    /// </summary>
+    public bool IsOpen { get; set; } = true;
+
+    /// <summary>
+    /// فترات العمل في اليوم (صباحية، مسائية...)
+    /// </summary>
+    public List<WorkingHoursShiftDto> Shifts { get; set; } = new();
+}
+
+/// <summary>
+/// كائن إدخال وتعديل جدول ساعات وأيام العمل الأسبوعية للمتجر
+/// </summary>
+public class SetStoreWorkingHoursInput
+{
+    /// <summary>
+    /// معرف المتجر
+    /// </summary>
+    [Required(ErrorMessage = "معرف المتجر مطلوب")]
+    public Guid StoreId { get; set; }
+
+    /// <summary>
+    /// قائمة أيام الأسبوع السبعة مع فترات وساعات العمل
+    /// </summary>
+    public List<StoreWorkingDayDto> Days { get; set; } = new();
+
+    /// <summary>
+    /// المنطقة الزمنية المعتمدة (الافتراضي: Asia/Riyadh)
+    /// </summary>
+    public string? TimeZone { get; set; } = "Asia/Riyadh";
+}
+
+/// <summary>
+/// كائن عرض جدول ساعات عمل المتجر وحالته اللحظية
+/// </summary>
+public class StoreWorkingHoursDto
+{
+    /// <summary>
+    /// معرف المتجر
+    /// </summary>
+    public Guid StoreId { get; set; }
+
+    /// <summary>
+    /// اسم المتجر
+    /// </summary>
+    public string StoreName { get; set; } = string.Empty;
+
+    /// <summary>
+    /// جدول الأيام السبعة وفترات العمل
+    /// </summary>
+    public List<StoreWorkingDayDto> Days { get; set; } = new();
+
+    /// <summary>
+    /// المنطقة الزمنية
+    /// </summary>
+    public string? TimeZone { get; set; } = "Asia/Riyadh";
+
+    /// <summary>
+    /// هل المتجر مفتوح في هذه اللحظة؟
+    /// </summary>
+    public bool IsOpenNow { get; set; }
+
+    /// <summary>
+    /// رسالة نصية توضح حالة المتجر
+    /// </summary>
+    public string StatusMessage { get; set; } = string.Empty;
+}
+
+/// <summary>
+/// كائن فحص حالة المتجر الآن
+/// </summary>
+public class StoreOpenStatusDto
+{
+    /// <summary>
+    /// معرف المتجر
+    /// </summary>
+    public Guid StoreId { get; set; }
+
+    /// <summary>
+    /// اسم المتجر
+    /// </summary>
+    public string StoreName { get; set; } = string.Empty;
+
+    /// <summary>
+    /// هل المتجر مفتوح ومتاح لاستقبال الطلبات الآن
+    /// </summary>
+    public bool IsOpenNow { get; set; }
+
+    /// <summary>
+    /// هل المتجر مفعل تشغيلياً من التاجر
+    /// </summary>
+    public bool IsActive { get; set; }
+
+    /// <summary>
+    /// حالة المتجر في المنصة
+    /// </summary>
+    public StoreStatus Status { get; set; }
+
+    /// <summary>
+    /// رسالة الحالة الموجهة للمستخدم
+    /// </summary>
+    public string StatusMessage { get; set; } = string.Empty;
+
+    /// <summary>
+    /// الموعد القادم لفتح المتجر إن كان مغلقاً
+    /// </summary>
+    public string? NextOpenTime { get; set; }
+}
+
+/// <summary>
+/// كائن مدخلات تعليق المتجر من قبل الإدارة
+/// </summary>
+public class SuspendStoreInput
+{
+    /// <summary>
+    /// سبب تعليق نشاط المتجر
+    /// </summary>
+    [Required(ErrorMessage = "يرجى توضيح سبب تعليق المتجر")]
+    [StringLength(500, ErrorMessage = "سبب التعليق لا يتجاوز 500 حرف")]
+    public string Reason { get; set; } = string.Empty;
 }

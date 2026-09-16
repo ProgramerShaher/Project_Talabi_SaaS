@@ -14,6 +14,8 @@ public class OrderDto : FullAuditedEntityDto<Guid>
     public Guid? TenantId { get; set; }
     public string OrderNumber { get; set; } = string.Empty;
     public Guid CustomerId { get; set; }
+    public string? CustomerName { get; set; }
+    public string? CustomerPhoneNumber { get; set; }
     public Guid StoreId { get; set; }
     public string StoreName { get; set; } = string.Empty;
     public Guid DeliveryAddressId { get; set; }
@@ -39,6 +41,7 @@ public class OrderDto : FullAuditedEntityDto<Guid>
     public DateTime? CancelledAt { get; set; }
     public string? PaymentReceiptUrl { get; set; }
     public List<OrderItemDto> Items { get; set; } = new();
+    public List<OrderStatusHistoryDto> Timeline { get; set; } = new();
     #endregion
 }
 
@@ -54,6 +57,7 @@ public class OrderItemDto : CreationAuditedEntityDto<Guid>
     public string? ProductImageUrl { get; set; }
     public string SKU { get; set; } = string.Empty;
     public string Unit { get; set; } = string.Empty;
+    public Guid? SalesUnitId { get; set; }
     public int Quantity { get; set; }
     public decimal UnitPrice { get; set; }
     public decimal Discount { get; set; }
@@ -96,6 +100,11 @@ public class CreateOrderItemDto
     #region Properties
     [Required(ErrorMessage = "معرف المنتج مطلوب")]
     public Guid ProductId { get; set; }
+
+    /// <summary>
+    /// معرف وحدة البيع المختارة (اختياري)
+    /// </summary>
+    public Guid? SalesUnitId { get; set; }
 
     [Range(1, int.MaxValue, ErrorMessage = "الكمية يجب أن تكون 1 على الأقل")]
     public int Quantity { get; set; } = 1;

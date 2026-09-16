@@ -62,15 +62,21 @@ public class CartItemConfiguration : IEntityTypeConfiguration<CartItem>
         builder.Property(x => x.UnitPriceAtAddition).HasPrecision(18, 2).IsRequired();
         builder.Property(x => x.TotalPrice).HasPrecision(18, 2).IsRequired();
         builder.Property(x => x.Notes).HasMaxLength(CartConsts.MaxNotesLength);
+        builder.Property(x => x.UnitName).HasMaxLength(50).HasDefaultValue("حبة");
         builder.Property(x => x.AddedAt).IsRequired();
 
-        builder.HasIndex(x => new { x.CartId, x.ProductId })
+        builder.HasIndex(x => new { x.CartId, x.ProductId, x.SalesUnitId })
             .IsUnique()
-            .HasDatabaseName("IX_CartItems_CartId_ProductId");
+            .HasDatabaseName("IX_CartItems_CartId_ProductId_SalesUnitId");
 
         builder.HasOne(x => x.Product)
             .WithMany()
             .HasForeignKey(x => x.ProductId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.SalesUnit)
+            .WithMany()
+            .HasForeignKey(x => x.SalesUnitId)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }

@@ -72,6 +72,8 @@ public class TalabiDbContext :
     // 4. Products & Inventory
     public DbSet<Talabi.Products.Product> Products { get; set; }
     public DbSet<Talabi.Products.ProductImage> ProductImages { get; set; }
+    public DbSet<Talabi.Products.SalesUnit> SalesUnits { get; set; }
+    public DbSet<Talabi.Products.ProductSalesUnit> ProductSalesUnits { get; set; }
     // public DbSet<Talabi.Products.Inventory> Inventories { get; set; }
 
     // 5. Carts

@@ -39,6 +39,7 @@ public class ProductDto : FullAuditedEntityDto<Guid>
     public int? MaxOrderQuantity { get; set; }
     // public int AvailableStock { get; set; }
     public List<ProductImageDto> Images { get; set; } = new();
+    public List<ProductSalesUnitDto> SalesUnits { get; set; } = new();
     #endregion
 }
 
@@ -106,6 +107,11 @@ public class CreateProductDto
     public int MinOrderQuantity { get; set; } = 1;
     public int? MaxOrderQuantity { get; set; }
     // public int InitialQuantity { get; set; } = 0;
+
+    /// <summary>
+    /// وحدات بيع المنتج الإضافية المخصصة (اختيارية بالكامل)
+    /// </summary>
+    public List<CreateProductSalesUnitDto>? SalesUnits { get; set; }
     #endregion
 }
 
@@ -169,5 +175,10 @@ public class UpdateProductDto
 
     public int MinOrderQuantity { get; set; }
     public int? MaxOrderQuantity { get; set; }
+
+    /// <summary>
+    /// وحدات بيع المنتج الإضافية المخصصة (اختيارية بالكامل)
+    /// </summary>
+    public List<UpdateProductSalesUnitDto>? SalesUnits { get; set; }
     #endregion
 }

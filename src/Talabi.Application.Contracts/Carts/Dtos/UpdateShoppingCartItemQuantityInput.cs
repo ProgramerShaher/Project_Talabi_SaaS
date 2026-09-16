@@ -9,7 +9,7 @@ public class UpdateShoppingCartItemQuantityInput
 {
     #region Properties
 
-    [Range(0, int.MaxValue, ErrorMessage = "الكمية يجب أن تكون أكبر من أو تساوي صفر")]
+    [Range(1, int.MaxValue, ErrorMessage = "الكمية يجب أن تكون 1 على الأقل. لإلغاء شراء المنتج، الرجاء حذفه من السلة.")]
     public int Quantity { get; set; }
 
     #endregion

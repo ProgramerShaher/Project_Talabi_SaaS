@@ -27,6 +27,16 @@ public class CartItem : CreationAuditedEntity<Guid>
     public virtual int Quantity { get; set; }
 
     /// <summary>
+    /// معرف وحدة البيع المحددة (اختياري - null إذا كان المنتج يباع بالحبة/بدون وحدات مخصصة)
+    /// </summary>
+    public virtual Guid? SalesUnitId { get; set; }
+
+    /// <summary>
+    /// اسم وحدة البيع وقت الإضافة (مثل: كيس، كيلو، حبة)
+    /// </summary>
+    public virtual string UnitName { get; set; } = "حبة";
+
+    /// <summary>
     /// سعر الوحدة وقت إضافتها للسلة
     /// </summary>
     public virtual decimal UnitPriceAtAddition { get; set; }
@@ -60,6 +70,11 @@ public class CartItem : CreationAuditedEntity<Guid>
     /// </summary>
     public virtual Product? Product { get; set; }
 
+    /// <summary>
+    /// وحدة البيع المرتبطة إن وجدت
+    /// </summary>
+    public virtual SalesUnit? SalesUnit { get; set; }
+
     #endregion
 
     #region 3. Constructors
@@ -74,7 +89,9 @@ public class CartItem : CreationAuditedEntity<Guid>
         Guid productId,
         int quantity,
         decimal unitPriceAtAddition,
-        string? notes = null)
+        string? notes = null,
+        Guid? salesUnitId = null,
+        string? unitName = null)
         : base(id)
     {
         CartId = cartId;
@@ -83,6 +100,8 @@ public class CartItem : CreationAuditedEntity<Guid>
         UnitPriceAtAddition = unitPriceAtAddition;
         TotalPrice = unitPriceAtAddition * quantity;
         Notes = notes;
+        SalesUnitId = salesUnitId;
+        UnitName = string.IsNullOrWhiteSpace(unitName) ? "حبة" : unitName;
         AddedAt = DateTime.UtcNow;
     }
 

@@ -6,9 +6,12 @@ using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Guids;
 using Xunit;
 
+using Volo.Abp.Modularity;
+
 namespace Talabi.Customers;
 
-public class CustomerAppServiceTests : TalabiApplicationTestBase<TalabiApplicationTestModule>
+public abstract class CustomerAppServiceTests<TStartupModule> : TalabiApplicationTestBase<TStartupModule>
+    where TStartupModule : IAbpModule
 {
     private readonly ICustomerAppService _customerAppService;
     private readonly ICustomerAddressAppService _customerAddressAppService;
@@ -16,7 +19,7 @@ public class CustomerAppServiceTests : TalabiApplicationTestBase<TalabiApplicati
     private readonly IGuidGenerator _guidGenerator;
     private readonly Volo.Abp.Users.ICurrentUser _currentUser;
 
-    public CustomerAppServiceTests()
+    protected CustomerAppServiceTests()
     {
         _customerAppService = GetRequiredService<ICustomerAppService>();
         _customerAddressAppService = GetRequiredService<ICustomerAddressAppService>();

@@ -169,4 +169,40 @@ public class Store : FullAuditedAggregateRoot<Guid>, IMultiTenant
         Status = StoreStatus.PendingApproval;
         IsActive = true;
     }
+
+    /// <summary>
+    /// اعتماد المتجر وتنشيطه في المنصة من قِبل إدارة النظام
+    /// </summary>
+    public void Approve()
+    {
+        Status = StoreStatus.Active;
+        IsActive = true;
+    }
+
+    /// <summary>
+    /// تعليق المتجر وإيقاف نشاطه مؤقتاً من قِبل إدارة النظام
+    /// </summary>
+    public void Suspend()
+    {
+        Status = StoreStatus.Suspended;
+        IsActive = false;
+    }
+
+    /// <summary>
+    /// تبديل حالة الفتح والإغلاق التشغيلي للمتجر من قِبل التاجر
+    /// </summary>
+    /// <returns>الحالة الجديدة للمتجر بعد التبديل</returns>
+    public bool ToggleOpenClose()
+    {
+        IsActive = !IsActive;
+        return IsActive;
+    }
+
+    /// <summary>
+    /// تعيين حالة الفتح والإغلاق التشغيلي للمتجر بشكل مباشر
+    /// </summary>
+    public void SetOpenClose(bool isOpen)
+    {
+        IsActive = isOpen;
+    }
 }

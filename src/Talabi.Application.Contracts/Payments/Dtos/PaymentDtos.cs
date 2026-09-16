@@ -60,23 +60,138 @@ public class PaymentReceiptDto : FullAuditedEntityDto<Guid>
 }
 
 /// <summary>
+/// كائن تفاصيل إيصال الدفع الموسعة متضمناً بيانات الطلب والمتجر والعميل
+/// </summary>
+public class PaymentReceiptDetailsDto : PaymentReceiptDto
+{
+    #region Extended Properties
+    /// <summary>
+    /// معرف الطلب المرتبط
+    /// </summary>
+    public Guid OrderId { get; set; }
+
+    /// <summary>
+    /// رقم الطلب التسلسلي (مثل: ORD-20260916-1234)
+    /// </summary>
+    public string OrderNumber { get; set; } = string.Empty;
+
+    /// <summary>
+    /// المبلغ الإجمالي للطلب
+    /// </summary>
+    public decimal OrderFinalAmount { get; set; }
+
+    /// <summary>
+    /// معرف المتجر
+    /// </summary>
+    public Guid StoreId { get; set; }
+
+    /// <summary>
+    /// اسم المتجر
+    /// </summary>
+    public string StoreName { get; set; } = string.Empty;
+
+    /// <summary>
+    /// معرف العميل صاحب الطلب
+    /// </summary>
+    public Guid CustomerId { get; set; }
+
+    /// <summary>
+    /// اسم العميل
+    /// </summary>
+    public string CustomerName { get; set; } = string.Empty;
+
+    /// <summary>
+    /// رقم هاتف العميل
+    /// </summary>
+    public string? CustomerPhoneNumber { get; set; }
+
+    /// <summary>
+    /// اسم طريقة الدفع المختارة
+    /// </summary>
+    public string PaymentMethodDisplayName { get; set; } = string.Empty;
+
+    /// <summary>
+    /// اسم المستخدم أو المشرف الذي راجع الإيصال
+    /// </summary>
+    public string? VerifiedByUserName { get; set; }
+    #endregion
+}
+
+/// <summary>
+/// كائن استعلام وقائمة إيصالات الدفع
+/// </summary>
+public class GetPaymentReceiptListInput : PagedAndSortedResultRequestDto
+{
+    #region Properties
+    /// <summary>
+    /// تصفية حسب المتجر
+    /// </summary>
+    public Guid? StoreId { get; set; }
+
+    /// <summary>
+    /// تصفية حسب الطلب
+    /// </summary>
+    public Guid? OrderId { get; set; }
+
+    /// <summary>
+    /// تصفية حسب حالة التحقق
+    /// </summary>
+    public ReceiptVerificationStatus? Status { get; set; }
+
+    /// <summary>
+    /// تصفية حسب تاريخ البداية
+    /// </summary>
+    public DateTime? StartDate { get; set; }
+
+    /// <summary>
+    /// تصفية حسب تاريخ النهاية
+    /// </summary>
+    public DateTime? EndDate { get; set; }
+
+    /// <summary>
+    /// نص البحث (رقم الطلب، رقم الحوالة، اسم المحفظة)
+    /// </summary>
+    public string? Filter { get; set; }
+    #endregion
+}
+
+/// <summary>
 /// كائن تسجيل إيصال دفع جديد
 /// </summary>
 public class SubmitPaymentReceiptInput
 {
     #region Properties
-    [Required(ErrorMessage = "معرف عملية الدفع مطلوب")]
-    public Guid PaymentId { get; set; }
+    /// <summary>
+    /// معرف عملية الدفع (اختياري إذا تم تحديد معرف الطلب)
+    /// </summary>
+    public Guid? PaymentId { get; set; }
 
+    /// <summary>
+    /// معرف الطلب المرتبط (اختياري إذا تم تحديد معرف عملية الدفع)
+    /// </summary>
+    public Guid? OrderId { get; set; }
+
+    /// <summary>
+    /// معرف ملف الإيصال المرفوع
+    /// </summary>
     [Required(ErrorMessage = "معرف ملف الإيصال المرفوع مطلوب")]
     public Guid MediaFileId { get; set; }
 
+    /// <summary>
+    /// اسم المحفظة أو البنك المحول منه
+    /// </summary>
     [StringLength(PaymentReceiptConsts.MaxWalletNameLength)]
     public string? WalletName { get; set; }
 
+    /// <summary>
+    /// رقم الحوالة أو العملية
+    /// </summary>
     [StringLength(PaymentReceiptConsts.MaxTransactionNumberLength)]
     public string? TransactionNumber { get; set; }
 
+    /// <summary>
+    /// المبلغ المذكور في الإيصال
+    /// </summary>
     public decimal? Amount { get; set; }
     #endregion
 }
@@ -87,11 +202,20 @@ public class SubmitPaymentReceiptInput
 public class VerifyPaymentReceiptInput
 {
     #region Properties
+    /// <summary>
+    /// معرف الإيصال
+    /// </summary>
     [Required(ErrorMessage = "معرف الإيصال مطلوب")]
     public Guid ReceiptId { get; set; }
 
+    /// <summary>
+    /// هل تم قبول واعتماد الإيصال؟
+    /// </summary>
     public bool IsApproved { get; set; }
 
+    /// <summary>
+    /// سبب الرفض في حال عدم القبول
+    /// </summary>
     [StringLength(PaymentReceiptConsts.MaxRejectionReasonLength)]
     public string? RejectionReason { get; set; }
     #endregion

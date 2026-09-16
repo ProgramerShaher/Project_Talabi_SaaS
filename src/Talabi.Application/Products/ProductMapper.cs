@@ -19,6 +19,7 @@ public partial class ProductMapper
     [MapperIgnoreTarget(nameof(Product.Store))]
     [MapperIgnoreTarget(nameof(Product.StoreCategory))]
     [MapperIgnoreTarget(nameof(Product.Images))]
+    [MapperIgnoreTarget(nameof(Product.SalesUnits))]
     public partial void ApplyCreateDto(CreateProductDto source, Product target);
 
     [MapperIgnoreTarget(nameof(Product.Id))]
@@ -26,5 +27,6 @@ public partial class ProductMapper
     [MapperIgnoreTarget(nameof(Product.Store))]
     [MapperIgnoreTarget(nameof(Product.StoreCategory))]
     [MapperIgnoreTarget(nameof(Product.Images))]
+    [MapperIgnoreTarget(nameof(Product.SalesUnits))]
     public partial void ApplyUpdateDto(UpdateProductDto source, Product target);
 }

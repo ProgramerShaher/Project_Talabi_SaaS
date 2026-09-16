@@ -19,7 +19,7 @@ namespace Talabi.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("_Abp_DatabaseProvider", EfCoreDatabaseProvider.SqlServer)
-                .HasAnnotation("ProductVersion", "10.0.9")
+                .HasAnnotation("ProductVersion", "10.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -147,9 +147,19 @@ namespace Talabi.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("SalesUnitId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<decimal>("TotalPrice")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UnitName")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasDefaultValue("حبة");
 
                     b.Property<decimal>("UnitPriceAtAddition")
                         .HasPrecision(18, 2)
@@ -159,9 +169,12 @@ namespace Talabi.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.HasIndex("CartId", "ProductId")
+                    b.HasIndex("SalesUnitId");
+
+                    b.HasIndex("CartId", "ProductId", "SalesUnitId")
                         .IsUnique()
-                        .HasDatabaseName("IX_CartItems_CartId_ProductId");
+                        .HasDatabaseName("IX_CartItems_CartId_ProductId_SalesUnitId")
+                        .HasFilter("[SalesUnitId] IS NOT NULL");
 
                     b.ToTable("AppCartItems", null, t =>
                         {
@@ -1440,6 +1453,9 @@ namespace Talabi.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<Guid?>("SalesUnitId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<decimal>("TotalPrice")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
@@ -1458,6 +1474,8 @@ namespace Talabi.Migrations
                     b.HasIndex("OrderId");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("SalesUnitId");
 
                     b.ToTable("AppOrderItems", null, t =>
                         {
@@ -2025,6 +2043,167 @@ namespace Talabi.Migrations
                         .HasDatabaseName("IX_ProductImages_ProductId_DisplayOrder");
 
                     b.ToTable("AppProductImages", (string)null);
+                });
+
+            modelBuilder.Entity("Talabi.Products.ProductSalesUnit", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<Guid?>("DeleterId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("DeleterId");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DeletionTime");
+
+                    b.Property<int>("DisplayOrder")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsDefault")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("LastModificationTime");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("LastModifierId");
+
+                    b.Property<decimal?>("Price")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SalesUnitId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UnitName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SalesUnitId");
+
+                    b.HasIndex("ProductId", "IsDefault")
+                        .HasDatabaseName("IX_ProductSalesUnits_ProductId_IsDefault");
+
+                    b.HasIndex("ProductId", "SalesUnitId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_ProductSalesUnits_ProductId_SalesUnitId");
+
+                    b.ToTable("AppProductSalesUnits", (string)null);
+                });
+
+            modelBuilder.Entity("Talabi.Products.SalesUnit", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("ConcurrencyStamp");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<Guid?>("DeleterId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("DeleterId");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DeletionTime");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("DisplayOrder")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<string>("ExtraProperties")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ExtraProperties");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("LastModificationTime");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("LastModifierId");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("TenantId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TenantId", "Name")
+                        .HasDatabaseName("IX_SalesUnits_TenantId_Name");
+
+                    b.ToTable("AppSalesUnits", (string)null);
                 });
 
             modelBuilder.Entity("Talabi.Stores.Store", b =>
@@ -4270,9 +4449,16 @@ namespace Talabi.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Talabi.Products.SalesUnit", "SalesUnit")
+                        .WithMany()
+                        .HasForeignKey("SalesUnitId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.Navigation("Cart");
 
                     b.Navigation("Product");
+
+                    b.Navigation("SalesUnit");
                 });
 
             modelBuilder.Entity("Talabi.Categories.Category", b =>
@@ -4460,9 +4646,16 @@ namespace Talabi.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Talabi.Products.SalesUnit", "SalesUnit")
+                        .WithMany()
+                        .HasForeignKey("SalesUnitId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.Navigation("Order");
 
                     b.Navigation("Product");
+
+                    b.Navigation("SalesUnit");
                 });
 
             modelBuilder.Entity("Talabi.Orders.OrderRejection", b =>
@@ -4567,6 +4760,25 @@ namespace Talabi.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Talabi.Products.ProductSalesUnit", b =>
+                {
+                    b.HasOne("Talabi.Products.Product", "Product")
+                        .WithMany("SalesUnits")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Talabi.Products.SalesUnit", "SalesUnit")
+                        .WithMany()
+                        .HasForeignKey("SalesUnitId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("SalesUnit");
                 });
 
             modelBuilder.Entity("Talabi.Stores.Store", b =>
@@ -4849,6 +5061,8 @@ namespace Talabi.Migrations
             modelBuilder.Entity("Talabi.Products.Product", b =>
                 {
                     b.Navigation("Images");
+
+                    b.Navigation("SalesUnits");
                 });
 
             modelBuilder.Entity("Talabi.Stores.Store", b =>
